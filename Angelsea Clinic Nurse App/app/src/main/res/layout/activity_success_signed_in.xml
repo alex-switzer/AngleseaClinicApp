@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical"
+    tools:context=".SuccessSignedInActivity">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animationSuccess"
+        android:layout_width="175dp"
+        android:layout_height="118dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="127dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="false"
+        app:lottie_rawRes="@raw/animationsuccess" />
+
+    <TextView
+        android:id="@+id/textViewSignedInName"
+        android:layout_width="wrap_content"
+        android:layout_height="62dp"
+        android:layout_below="@+id/animationSuccess"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="183dp"
+        android:text="NAME Signed In"
+        android:textSize="40sp" />
+
+    <Button
+        android:id="@+id/button_SignedInFinish"
+        android:layout_width="177dp"
+        android:layout_height="84dp"
+        android:layout_below="@+id/textViewSignedInName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="119dp"
+        android:text="Finish"
+        android:textSize="30sp" />
+
+
+</RelativeLayout>
