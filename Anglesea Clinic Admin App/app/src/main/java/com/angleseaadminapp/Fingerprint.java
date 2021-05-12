@@ -1,4 +1,4 @@
-package com.angleseaclinicadminapp;
+package com.angleseaadminapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;

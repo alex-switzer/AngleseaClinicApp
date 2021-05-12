@@ -1,4 +1,4 @@
-package com.angleseaclinicadminapp;
+package com.angleseaadminapp;
 
 import org.junit.Test;
 
