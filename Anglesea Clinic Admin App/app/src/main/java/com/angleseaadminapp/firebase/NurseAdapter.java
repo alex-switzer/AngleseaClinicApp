@@ -21,8 +21,9 @@ public class NurseAdapter extends RecyclerView.Adapter<NurseAdapter.NurseViewHol
     @NonNull
     @Override
     public NurseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(c).inflate(R.layout.nurse_item ,parent,false); //TODO: make nurse item
-        return new NurseViewHolder(v);
+        //View v = LayoutInflater.from(c).inflate(R.layout.nurse_item ,parent,false); //TODO: make nurse item
+        //return new NurseViewHolder(v);
+        return null;
     }
 
     @Override
