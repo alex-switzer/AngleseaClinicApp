@@ -11,9 +11,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Welcome name"
+        android:text="Welcome\n'Name'"
+        android:textAlignment="center"
         android:textSize="65sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView_isCorrect"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,16 +26,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:onClick="correct"
-        android:text="Is this correct?"
+        android:text="Is this you?"
         android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_welcome_name" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_noIncorrect"
-        android:layout_width="190dp"
-        android:layout_height="72dp"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
         android:onClick="incorrect"
         android:text="No, take me back"
         android:backgroundTint="@color/cancel_red"
@@ -42,8 +46,8 @@
 
     <Button
         android:id="@+id/button_yesCorrect"
-        android:layout_width="190dp"
-        android:layout_height="72dp"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
         android:backgroundTint="@color/confirm_green"
         android:onClick="correct"
         android:text="Yes, Sign Me In"
