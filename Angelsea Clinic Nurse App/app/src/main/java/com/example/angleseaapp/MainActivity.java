@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        mPinLockView = (PinLockView) findViewById(R.id.pin_lock_view);
-        mIndicatorDots = (IndicatorDots) findViewById(R.id.indicator_dots);
-        mIndicatorDots.setBackgroundColor(getResources().getColor(R.color.greyish));
+        mPinLockView = findViewById(R.id.pin_lock_view);
+        mIndicatorDots = findViewById(R.id.indicator_dots);
+        mIndicatorDots.setBackgroundColor(getResources().getColor(R.color.grey));
         mPinLockView.attachIndicatorDots(mIndicatorDots);
         mPinLockView.setPinLockListener(mPinLockListener);
         //mPinLockView.setCustomKeySet(new int[]{2, 3, 1, 5, 9, 6, 7, 0, 8, 4});
