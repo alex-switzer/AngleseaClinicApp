@@ -18,7 +18,7 @@ public class NurseHelper {
 
     public NurseHelper() {
         FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance("String").getReference()
+        mDatabase = FirebaseDatabase.getInstance("https://anglesea-medical-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference()
                 .child(mUser.getUid()).child("nurses");
 
         mDatabase.addValueEventListener(nurseListener);
