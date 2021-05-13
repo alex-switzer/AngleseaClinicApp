@@ -28,12 +28,12 @@ public class ConfirmationActivity extends AppCompatActivity {
     }
 
     public void Incorrect(View view) {
-        startActivity(new Intent(ConfirmationActivity.this,MainActivity.class));
+        startActivity(new Intent(ConfirmationActivity.this, MainActivity.class));
     }
 
     public void Correct(View view){
-        Intent intent = new Intent(ConfirmationActivity.this,SuccessSignedInActivity.class);
-        intent.putExtra(NAMEID,profileName);
+        Intent intent = new Intent(ConfirmationActivity.this, SuccessSignedInActivity.class);
+        intent.putExtra(NAMEID, profileName);
         startActivity(intent);
 
     }

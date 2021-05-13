@@ -23,6 +23,6 @@ public class SuccessSignedInActivity extends AppCompatActivity {
 
     }
     public void Finish(View view){
-        startActivity(new Intent(SuccessSignedInActivity.this,MainActivity.class));
+        startActivity(new Intent(SuccessSignedInActivity.this, MainActivity.class));
     }
 }

@@ -22,17 +22,19 @@ public class MainActivity extends AppCompatActivity {
     private PinLockListener mPinLockListener = new PinLockListener() {
         @Override
         public void onComplete(String pin) {
+            Log.d(TAG, "pin entered: " + pin);
 
-            if(pin.equals("1234")) {
-                    Intent intent = new Intent(MainActivity.this,ConfirmationActivity.class);
-                    String personName = "Robert";
-                    intent.putExtra(NAMEID,personName);
-                    startActivity(intent);
+            //TODO: Query database for nurse with given pin
+            if (pin.equals("1234")) {
+                Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
+                //TODO: Update presence for nurse with given pin
+                //TODO: Add early sign out condition, + must give reason?
+                String personName = "Robert";
+                intent.putExtra(NAMEID, personName);
+                startActivity(intent);
             } else {
-                startActivity(new Intent(MainActivity.this,FailedSignedInActivity.class));
+                startActivity(new Intent(MainActivity.this, FailedSignedInActivity.class));
             }
-
-            Log.d(TAG, "Pin complete: " + pin);
         }
 
         @Override
@@ -45,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Pin changed, new length " + pinLength + " with intermediate pin " + intermediatePin);
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPinLockView.resetPinLockView();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
