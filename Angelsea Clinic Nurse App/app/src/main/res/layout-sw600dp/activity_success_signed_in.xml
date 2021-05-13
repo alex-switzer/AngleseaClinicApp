@@ -9,11 +9,11 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationSuccess"
-        android:layout_width="123dp"
-        android:layout_height="83dp"
+        android:layout_width="175dp"
+        android:layout_height="118dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="127dp"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/animationsuccess" />
@@ -24,20 +24,20 @@
         android:layout_height="62dp"
         android:layout_below="@+id/animationSuccess"
         android:layout_centerInParent="true"
-        android:layout_marginTop="47dp"
+        android:layout_marginTop="105dp"
         android:text="NAME Signed In"
         android:textSize="40sp" />
 
     <Button
         android:id="@+id/button_SignedInFinish"
-        android:layout_width="107dp"
-        android:layout_height="45dp"
+        android:layout_width="177dp"
+        android:layout_height="84dp"
         android:layout_below="@+id/textViewSignedInName"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="71dp"
-        android:onClick="finish"
+        android:layout_marginTop="100dp"
         android:text="Finish"
-        android:textSize="15sp" />
+        android:onClick="finish"
+        android:textSize="30sp" />
 
 
 </RelativeLayout>
