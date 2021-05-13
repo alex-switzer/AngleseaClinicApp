@@ -1,7 +1,6 @@
-package com.example.angelseaapp;
+package com.example.angleseaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;

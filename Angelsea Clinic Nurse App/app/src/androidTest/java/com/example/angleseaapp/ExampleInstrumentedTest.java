@@ -1,4 +1,4 @@
-package com.example.angelseaapp;
+package com.example.angleseaapp;
 
 import android.content.Context;
 

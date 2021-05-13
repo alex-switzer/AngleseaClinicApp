@@ -1,4 +1,4 @@
-package com.example.angelseaapp;
+package com.example.angleseaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
