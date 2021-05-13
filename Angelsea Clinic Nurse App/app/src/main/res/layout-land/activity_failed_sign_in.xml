@@ -36,7 +36,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="426dp"
         android:layout_marginTop="88dp"
-        android:onClick="Finish"
+        android:onClick="finish"
         android:text="Retry"
         android:textSize="30sp" />
 

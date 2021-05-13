@@ -2,10 +2,15 @@ package com.example.angleseaapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.airbnb.lottie.LottieAnimationView;
 
 public class SuccessSignedInActivity extends AppCompatActivity {
     public static final String NAMEID = "NameID";
@@ -21,8 +26,25 @@ public class SuccessSignedInActivity extends AppCompatActivity {
         textViewName = findViewById(R.id.textViewSignedInName);
         textViewName.setText(name + " signed in");
 
+        LottieAnimationView successAnimation = findViewById(R.id.animationSuccess);
+        successAnimation.addAnimatorListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {}
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                finish();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {}
+        });
     }
-    public void Finish(View view){
-        startActivity(new Intent(SuccessSignedInActivity.this, MainActivity.class));
+
+    public void finish(View view){
+        finish();
     }
 }

@@ -14,7 +14,7 @@ public class FailedSignedInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_failed_sign_in);
     }
 
-    public void Finish(View view) {
+    public void finish(View view) {
         finish();
     }
 }

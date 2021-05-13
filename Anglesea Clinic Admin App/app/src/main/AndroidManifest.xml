@@ -5,7 +5,7 @@
         android:name="android.hardware.fingerprint"
         android:required="true" />
 
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+<!--    <uses-permission android:name="android.permission.USE_FINGERPRINT" />-->
 
     <application
         android:allowBackup="true"
@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AngleseaClinicAdminApp" >
-        <activity android:name="com.angleseaadminapp.MainActivity" ></activity>
+        <activity android:name="com.angleseaadminapp.MainActivity" />
         <activity android:name="com.angleseaadminapp.Fingerprint" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
