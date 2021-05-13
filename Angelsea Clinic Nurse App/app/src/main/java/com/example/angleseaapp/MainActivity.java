@@ -23,13 +23,12 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onComplete(String pin) {
 
-            if(pin.equals("1234")){
+            if(pin.equals("1234")) {
                     Intent intent = new Intent(MainActivity.this,ConfirmationActivity.class);
                     String personName = "Robert";
                     intent.putExtra(NAMEID,personName);
                     startActivity(intent);
-            }
-            else{
+            } else {
                 startActivity(new Intent(MainActivity.this,FailedSignedInActivity.class));
             }
 
