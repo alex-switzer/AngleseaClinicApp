@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/profile_image"
-        android:layout_width="301dp"
-        android:layout_height="138dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:src="@drawable/logo"
@@ -20,15 +20,15 @@
 
     <TextView
         android:id="@+id/profile_name"
-        android:layout_width="257dp"
-        android:layout_height="43dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/profile_image"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="72dp"
         android:fontFamily="sans-serif-thin"
-        android:gravity="center"
+        android:textAlignment="center"
         android:maxLines="1"
-        android:text="Please Sign In"
+        android:text="Enter Your Pin"
         android:textColor="@color/black"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/indicator_dots"

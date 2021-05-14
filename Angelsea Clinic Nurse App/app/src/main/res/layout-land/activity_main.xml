@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,26 +9,32 @@
 
     <ImageView
         android:id="@+id/profile_image"
-        android:layout_width="212dp"
-        android:layout_height="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp"
-        android:src="@drawable/logo" />
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toTopOf="@+id/profile_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/profile_name"
-        android:layout_width="256dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_image"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
+        android:layout_marginBottom="32dp"
         android:fontFamily="sans-serif-thin"
         android:gravity="center"
         android:maxLines="1"
         android:text="Please Sign In"
         android:textColor="@color/black"
-        android:textSize="34sp" />
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.andrognito.pinlockview.IndicatorDots
         android:id="@+id/indicator_dots"
@@ -36,7 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/profile_name"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp" />
+        app:layout_constraintEnd_toEndOf="@+id/pin_lock_view"
+        app:layout_constraintStart_toStartOf="@+id/pin_lock_view"
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
     <com.andrognito.pinlockview.PinLockView
         android:id="@+id/pin_lock_view"
@@ -45,12 +53,22 @@
         android:layout_below="@id/indicator_dots"
         android:layout_centerHorizontal="true"
 
-        android:layout_marginTop="11dp"
+        android:layout_marginTop="16dp"
         app:dotDiameter="50dp"
         app:dotFilledBackground="@color/black"
         app:keypadButtonSize="45dp"
         app:keypadShowDeleteButton="true"
         app:keypadTextColor="#000000"
-        app:keypadTextSize="18dp" />
+        app:keypadTextSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indicator_dots" />
 
-</RelativeLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
