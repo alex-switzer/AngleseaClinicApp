@@ -23,7 +23,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         nameTextView = findViewById(R.id.textView_welcome_name);
         Intent intent = getIntent();
         profileName = intent.getStringExtra(NAMEID);
-        nameTextView.setText("Welcome\n" + profileName);
+        nameTextView.setText("Welcome " + profileName);
 
     }
 

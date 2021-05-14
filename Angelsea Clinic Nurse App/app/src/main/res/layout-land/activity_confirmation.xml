@@ -4,65 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:layout_gravity="center">
+    android:layout_gravity="center"
+    android:background="@color/white">
 
     <TextView
         android:id="@+id/textView_welcome_name"
-        android:layout_width="325dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="160dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Welcome name"
         android:textAlignment="center"
         android:textSize="32sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textView_isCorrect"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/textView_isCorrect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:onClick="Correct"
+        android:layout_marginBottom="28dp"
         android:text="Is this correct?"
         android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_welcome_name" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button_yesCorrect"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginEnd="130dp"
-        android:layout_marginBottom="42dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/confirm_green"
         android:onClick="correct"
         android:text="Yes, Sign Me In"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/button_noIncorrect"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <Button
         android:id="@+id/button_noIncorrect"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="116dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="@color/cancel_red"
         android:onClick="incorrect"
         android:text="No, take me back"
-        app:layout_constraintBottom_toBottomOf="@+id/button_yesCorrect"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_yesCorrect" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="538dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_yesCorrect"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -70,9 +60,15 @@
         android:layout_height="89dp"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

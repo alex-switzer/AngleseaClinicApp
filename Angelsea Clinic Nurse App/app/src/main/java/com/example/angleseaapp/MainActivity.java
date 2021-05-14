@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra(NAMEID, personName);
                 startActivity(intent);
             } else {
-                startActivity(new Intent(MainActivity.this, FailedSignedInActivity.class));
+                //TODO: Add failure to sign-in
+                mPinLockView.resetPinLockView();
             }
         }
 
