@@ -26,7 +26,7 @@ public class SuccessSignedInActivity extends AppCompatActivity {
         textViewName = findViewById(R.id.textViewSignedInName);
         textViewName.setText(name + " signed in");
 
-       ((LottieAnimationView) findViewById(R.id.animationSuccess)).addAnimatorListener(new Animator.AnimatorListener() {
+       /*((LottieAnimationView) findViewById(R.id.animationSuccess)).addAnimatorListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {}
 
@@ -40,7 +40,7 @@ public class SuccessSignedInActivity extends AppCompatActivity {
 
             @Override
             public void onAnimationRepeat(Animator animation) {}
-        });
+       });*/
     }
 
     public void finish(View view){
