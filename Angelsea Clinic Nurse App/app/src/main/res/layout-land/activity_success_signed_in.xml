@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical"
-    tools:context=".SuccessSignedInActivity">
+    tools:context=".SuccessSignedActivity">
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/animationSuccess"
-        android:layout_width="175dp"
-        android:layout_height="118dp"
+        android:layout_width="123dp"
+        android:layout_height="83dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="127dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/animationsuccess" />
@@ -24,20 +27,25 @@
         android:layout_height="62dp"
         android:layout_below="@+id/animationSuccess"
         android:layout_centerInParent="true"
-        android:layout_marginTop="105dp"
         android:text="NAME Signed In"
-        android:textSize="40sp" />
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/animationSuccess" />
 
     <Button
         android:id="@+id/button_SignedInFinish"
-        android:layout_width="177dp"
-        android:layout_height="84dp"
+        android:layout_width="107dp"
+        android:layout_height="45dp"
         android:layout_below="@+id/textViewSignedInName"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="finish"
         android:text="Finish"
-        android:onClick="Finish"
-        android:textSize="30sp" />
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

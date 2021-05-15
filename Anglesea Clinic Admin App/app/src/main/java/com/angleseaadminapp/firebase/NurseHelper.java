@@ -29,9 +29,9 @@ public class NurseHelper {
     }
 
     public void saveNurse(Nurse nurse){
-        if (nurse.getId() == null){
+        if (nurse.getId() == null) {
             mDatabase.push().setValue(nurse);
-        }else {
+        } else {
             mDatabase.child(nurse.getId()).setValue(nurse);
         }
     }

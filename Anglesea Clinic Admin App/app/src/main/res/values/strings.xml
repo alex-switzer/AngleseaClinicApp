@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Anglesea Clinic Admin App</string>
+    <string name="app_name">Anglesea Admin App</string>
     <string name="navigation_draw_open">Open Navigation Drawer</string>
     <string name="navigation_draw_close">Close Navigation Drawer</string>
     <string name="instructions">Place your fingertip on the Home button to verify your identity</string>
