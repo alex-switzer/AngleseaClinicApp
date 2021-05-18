@@ -51,8 +51,10 @@ public class MainActivity extends AppCompatActivity {
                             .setAvailableProviders(providers)
                             .build(),
                     RC_SIGN_IN);
+        }else{
+            nurseHelper = new NurseHelper();
         }
-        nurseHelper = new NurseHelper();
+
 
         mPinLockView = findViewById(R.id.pin_lock_view);
         mIndicatorDots = findViewById(R.id.indicator_dots);
@@ -126,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK) {
                 //just logged in
+                nurseHelper = new NurseHelper();
             } else {
                 //error logging in
             }
