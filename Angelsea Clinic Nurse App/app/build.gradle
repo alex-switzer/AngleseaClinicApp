@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.angleseaapp"
-        minSdkVersion 26
+        minSdkVersion 25
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -38,4 +38,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation "com.airbnb.android:lottie:3.7.0"
     implementation 'com.andrognito.pinlockview:pinlockview:2.1.0'
+
+    implementation platform('com.google.firebase:firebase-bom:27.1.0')
+
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-database'
+
+    implementation 'com.firebaseui:firebase-ui-auth:7.1.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

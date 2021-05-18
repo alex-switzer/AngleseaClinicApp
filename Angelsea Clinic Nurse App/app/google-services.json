@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "524011702002",
+    "firebase_url": "https://anglesea-medical-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "anglesea-medical",
+    "storage_bucket": "anglesea-medical.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524011702002:android:7c9e9ec8d894ee67fbf26b",
+        "android_client_info": {
+          "package_name": "com.angleseaadminapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524011702002-me3lr69nar68515to6dcjscaifv0mcmr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7pEy-c65IxO_IMnHc4XIOwXuxP0l0RIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524011702002-me3lr69nar68515to6dcjscaifv0mcmr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524011702002:android:3a2f67dc8a5c7f0afbf26b",
+        "android_client_info": {
+          "package_name": "com.example.angleseaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524011702002-me3lr69nar68515to6dcjscaifv0mcmr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7pEy-c65IxO_IMnHc4XIOwXuxP0l0RIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524011702002-me3lr69nar68515to6dcjscaifv0mcmr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524011702002:android:a9db826656c2a66dfbf26b",
+        "android_client_info": {
+          "package_name": "nz.co.angleseamedical.admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524011702002-me3lr69nar68515to6dcjscaifv0mcmr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7pEy-c65IxO_IMnHc4XIOwXuxP0l0RIg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524011702002-me3lr69nar68515to6dcjscaifv0mcmr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
