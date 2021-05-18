@@ -1,30 +1,38 @@
 package com.angleseahospital.admin.firebase;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.angleseahospital.admin.R;
 
 import java.util.ArrayList;
 
 public class NurseAdapter extends RecyclerView.Adapter<NurseAdapter.NurseViewHolder> {
 
+    Context c;
     ArrayList<Nurse> nurses;
 
-    public NurseAdapter() {}
-    
-    public NurseAdapter(ArrayList<Nurse> nuses) {
-        this.nurses = nuses;
+    public NurseAdapter(Context c) {
+        this.c = c;
     }
 
+    public NurseAdapter(Context c, ArrayList<Nurse> nurses) {
+        this.c = c;
+        this.nurses = nurses;
+    }
 
     @NonNull
     @Override
     public NurseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //View v = LayoutInflater.from(c).inflate(R.layout.nurse_item ,parent,false); //TODO: make nurse item
-        //return new NurseViewHolder(v);
-        return null;
+        View v = LayoutInflater.from(c).inflate(R.layout.item_nurse ,parent,false);
+
+        return new NurseViewHolder(v);
     }
 
     @Override
@@ -49,16 +57,14 @@ public class NurseAdapter extends RecyclerView.Adapter<NurseAdapter.NurseViewHol
     public class NurseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         //TODO: make right text views
-        //TextView nameTxt, propTxt, descTxt;
+        TextView nameTxt;
         ItemClickListener itemClickListener;
 
         public NurseViewHolder(View itemView) {
             super(itemView);
 
             //TODO: find text views
-            //nameTxt = (TextView) itemView.findViewById(R.id.nameTxt);
-            //propTxt = (TextView) itemView.findViewById(R.id.propellantTxt);
-            //descTxt = (TextView) itemView.findViewById(R.id.descTxt);
+            nameTxt = (TextView) itemView.findViewById(R.id.text_view_nurse_name);
 
             itemView.setOnClickListener(this);
         }

@@ -1,29 +1,49 @@
 package com.angleseahospital.admin;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.angleseahospital.admin.firebase.Nurse;
 import com.angleseahospital.admin.firebase.NurseAdapter;
+import com.angleseahospital.admin.firebase.NurseHelper;
+
+import java.util.ArrayList;
 
 public class Home extends Fragment {
 
     private RecyclerView rc_nurse;
+    private NurseHelper nurseHelper;
+    private NurseAdapter recyclerViewAdapter;
 
+    @Nullable
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.activity_add_nurse, container, false);
 
-        rc_nurse = getView().findViewById(R.id.rc_nurse);
+        rc_nurse = v.findViewById(R.id.rc_nurse);
         rc_nurse.setHasFixedSize(true);
+        nurseHelper = new NurseHelper();
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        NurseAdapter nurseAdapter = new NurseAdapter(/*TODO: Get nurses from database, load them into adapter*/);
+        nurseHelper.getNurses().observe(getViewLifecycleOwner(), new Observer<ArrayList<Nurse>>() {
+            @Override
+            public void onChanged(ArrayList<Nurse> nurseArrayList) {
+                recyclerViewAdapter = new NurseAdapter(getContext(), nurseArrayList);
+                rc_nurse.setLayoutManager(new LinearLayoutManager(getContext()));
+                rc_nurse.setAdapter(recyclerViewAdapter);
+            }
+        });
 
-        rc_nurse.setLayoutManager(layoutManager);
-        rc_nurse.setAdapter(nurseAdapter);
+        return v;
     }
 }

@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:524011702002:android:7c9e9ec8d894ee67fbf26b",
+        "mobilesdk_app_id": "1:524011702002:android:07ee5facdae78771fbf26b",
         "android_client_info": {
-          "package_name": "com.angleseaadminapp"
+          "package_name": "com.angleseahospital.admin"
         }
       },
       "oauth_client": [
@@ -37,9 +37,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:524011702002:android:cdbbed26b95aeee2fbf26b",
+        "mobilesdk_app_id": "1:524011702002:android:ee4e1eff2e311568fbf26b",
         "android_client_info": {
-          "package_name": "nz.co.angleseamedical.firebase"
+          "package_name": "com.angleseahospital.nurse"
         }
       },
       "oauth_client": [
