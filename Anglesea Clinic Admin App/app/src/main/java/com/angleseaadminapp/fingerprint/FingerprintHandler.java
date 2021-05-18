@@ -1,4 +1,4 @@
-package com.angleseaadminapp;
+package com.angleseaadminapp.fingerprint;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -11,6 +11,8 @@ import android.os.CancellationSignal;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+
+import com.angleseaadminapp.MainActivity;
 
 @TargetApi(Build.VERSION_CODES.O)
 public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {

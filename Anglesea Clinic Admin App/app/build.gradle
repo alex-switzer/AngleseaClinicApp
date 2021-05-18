@@ -40,6 +40,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation platform('com.google.firebase:firebase-bom:27.1.0')
+<<<<<<< HEAD
+=======
+//    implementation 'com.firebaseui:firebase-ui-auth:6.4.0'
+    implementation 'com.google.firebase:firebase-database:19.7.0'
+>>>>>>> af9aca455623d9061b7d9f4d898cb80c5e408e37
 
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-database'

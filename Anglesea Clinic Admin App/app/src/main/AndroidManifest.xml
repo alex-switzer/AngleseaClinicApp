@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AngleseaClinicAdminApp" >
         <activity android:name="com.angleseaadminapp.MainActivity" />
-        <activity android:name="com.angleseaadminapp.Fingerprint" >
+        <activity android:name="com.angleseaadminapp.fingerprint.Fingerprint" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

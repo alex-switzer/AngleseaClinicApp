@@ -63,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(String pin) {
                 Log.d(TAG, "pin entered: " + pin);
 
-
                 boolean is_found = false;
                 for (Nurse nurse : nurseHelper.getNurses().getValue()) {
                     if (pin.equals(nurse.getPin())) {
