@@ -1,4 +1,4 @@
-package com.angleseaadminapp;
+package com.angleseaadminapp.fingerprint;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -7,12 +7,13 @@ import android.Manifest;
 import android.app.KeyguardManager;
 import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
 import android.widget.TextView;
+
+import com.angleseaadminapp.R;
 
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;

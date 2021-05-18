@@ -14,8 +14,9 @@ public class ConfirmationActivity extends AppCompatActivity {
     private Button yesCorrect;
     private Button noIncorrect;
     private TextView nameTextView;
+
     private String profileName = "";
-    private MainActivity.SigningStatus status;
+    private SigningStatus status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,6 @@ public class ConfirmationActivity extends AppCompatActivity {
             case SIGNING_OUT_EARLY:
             case SIGNING_OUT:
                 yesCorrect.setText("Yes, Sign Me Out");
-                break;
         }
     }
 
@@ -50,10 +50,12 @@ public class ConfirmationActivity extends AppCompatActivity {
     public void correct(View view) {
         Intent intent;
 
-        if (status == MainActivity.SigningStatus.SIGNING_OUT_EARLY) {
-            intent = new Intent(ConfirmationActivity.this, EarlySignoutActivity.class);
-        } else {
-            intent = new Intent(ConfirmationActivity.this, SuccessSignedActivity.class);
+        switch (status) {
+            case SIGNING_OUT_EARLY:
+                intent = new Intent(ConfirmationActivity.this, EarlySignoutActivity.class);
+                break;
+            default:
+                intent = new Intent(ConfirmationActivity.this, SuccessSignedActivity.class);
         }
 
         intent.putExtra(MainActivity.NAME_ID_EXTRA, profileName);

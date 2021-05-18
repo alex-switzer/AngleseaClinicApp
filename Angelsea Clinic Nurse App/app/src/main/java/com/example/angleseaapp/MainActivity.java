@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                     //TODO: Add early sign out condition, + must give reason?
                     String personName = "Robert";
                     intent.putExtra(NAME_ID_EXTRA, personName);
-                    intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
+                    intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal());
                     startActivity(intent);
                 } else if (pin.equals("4321")) {
                     Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
