@@ -58,7 +58,7 @@ public class Nurse {
 
     @Exclude
     public Shift[] getShifts(){
-        //TODO: DB lookup
+        //TODO: Get Shifts from database
         return new Shift[]{
                 //lookup 1,
         };

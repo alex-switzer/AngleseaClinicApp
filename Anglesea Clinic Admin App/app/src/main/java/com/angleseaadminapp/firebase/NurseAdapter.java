@@ -15,8 +15,14 @@ import java.util.ArrayList;
 
 public class NurseAdapter extends RecyclerView.Adapter<NurseAdapter.NurseViewHolder> {
 
-    Context c;
     ArrayList<Nurse> nurses;
+
+    public NurseAdapter() {}
+    
+    public NurseAdapter(ArrayList<Nurse> nuses) {
+        this.nurses = nuses;
+    }
+
 
     @NonNull
     @Override
@@ -30,7 +36,7 @@ public class NurseAdapter extends RecyclerView.Adapter<NurseAdapter.NurseViewHol
     public void onBindViewHolder(@NonNull NurseAdapter.NurseViewHolder holder, int position) {
         final Nurse s = nurses.get(position);
 
-        //TODO: holder wright to text views
+        //TODO: Holder write to textviews
 
         holder.setItemClickListener(new ItemClickListener() {
             @Override
