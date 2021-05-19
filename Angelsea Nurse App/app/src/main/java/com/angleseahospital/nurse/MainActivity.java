@@ -75,8 +75,11 @@ public class MainActivity extends AppCompatActivity {
                         String personName = nurse.getName_first();
                         intent.putExtra(NAME_ID_EXTRA, personName);
                         intent.putExtra(NURSE_OBJECT, (Parcelable) nurse);
-                        if(nurse.isPresent()){
-                            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
+                        if(nurse.isPresent()) {
+                            if (nurse.getPin().equals("2580"))
+                                intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT_EARLY.ordinal());
+                            else
+                                intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
                         }
                         else{
                             intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal());
