@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.angleseahospital.admin.firebase.Nurse;
 import com.angleseahospital.admin.firebase.NurseAdapter;
@@ -23,20 +24,22 @@ import java.util.ArrayList;
 public class Home extends Fragment {
 
     private NurseAdapter recyclerViewAdapter;
+    private View v;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_home, container, false);
+        return v = inflater.inflate(R.layout.activity_home, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        RecyclerView rc_nurse = getView().findViewById(R.id.rc_nurse);
+        RecyclerView rc_nurse = v.findViewById(R.id.rc_nurse);
         rc_nurse.setHasFixedSize(true);
 
+        //TODO: Link the home page recyclerview with nurses in database
         /*NurseHelper nurseHelper = new NurseHelper();
         nurseHelper.getNurses().observe(getViewLifecycleOwner(), new Observer<ArrayList<Nurse>>() {
             @Override

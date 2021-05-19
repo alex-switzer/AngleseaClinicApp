@@ -44,7 +44,7 @@ public class Fingerprint extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_fingerprint);
 
         //Note: SDK version must be higher than M / 23
         //Get an instance of KeyguardManager and FingerprintManager//

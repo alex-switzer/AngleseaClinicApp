@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.drawer_menu);
 
         /*FirebaseApp.initializeApp(this);
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -39,28 +40,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .setAvailableProviders(providers)
                             .build(),
                     RC_SIGN_IN);
-        } else {
+        }
+*/
 
-*//*
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*//*
+        /*Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
-            drawer = findViewById(R.id.draw_layout);
-            navigationView = findViewById(R.id.nav_view);
+        drawer = findViewById(R.id.draw_layout);
+        navigationView = findViewById(R.id.nav_view);
 
-            navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
 
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,
-                    R.string.navigation_draw_open, R.string.navigation_draw_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer,
+                R.string.navigation_draw_open, R.string.navigation_draw_close);
 
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-            if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home()).commit();
-                navigationView.setCheckedItem(R.id.nav_home);
-            }
-        }*/
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
     }
 
     @Override
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home()).commit();
