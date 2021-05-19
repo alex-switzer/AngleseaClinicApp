@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.angleseahospital.nurse.firebase.Nurse;
+import com.angleseahospital.nurse.firebase.NurseHelper;
+
 import static com.angleseahospital.nurse.MainActivity.*;
 
 public class SuccessSignedActivity extends AppCompatActivity {
@@ -22,7 +25,6 @@ public class SuccessSignedActivity extends AppCompatActivity {
         SigningStatus status = SigningStatus.values()[intent.getIntExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal())];
 
         textView_Name = findViewById(R.id.textViewSignedInName);
-
         switch (status) {
             case SIGNING_IN:
                 textView_Name.setText(name + " signed in");

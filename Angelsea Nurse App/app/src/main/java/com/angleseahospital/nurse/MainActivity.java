@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.andrognito.pinlockview.IndicatorDots;
@@ -15,6 +16,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String NAME_ID_EXTRA = "NameID";
     public static final String SIGNING_STATUS_EXTRA = "SigningStatus";
     public static final int RC_SIGN_IN = 1;
+    public static final String NURSE_OBJECT = "NurseObject";
 
     public enum SigningStatus {
         SIGNING_IN,
@@ -69,10 +72,16 @@ public class MainActivity extends AppCompatActivity {
                         is_found = true;
                         Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
                         //TODO: Update presence for nurse with given pin
-                        //TODO: Add early sign out condition, + must give reason?
                         String personName = nurse.getName_first();
                         intent.putExtra(NAME_ID_EXTRA, personName);
-                        intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
+                        intent.putExtra(NURSE_OBJECT, (Parcelable) nurse);
+                        if(nurse.isPresent()){
+                            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
+                        }
+                        else{
+                            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal());
+                        }
+
                         startActivity(intent);
                     }
                     /*

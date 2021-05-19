@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.angleseahospital.nurse.firebase.Nurse;
+import com.angleseahospital.nurse.firebase.NurseHelper;
+
 import static com.angleseahospital.nurse.MainActivity.*;
 
 public class ConfirmationActivity extends AppCompatActivity {
@@ -49,15 +52,22 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     public void correct(View view) {
         Intent intent;
-
+        Intent getIntent = getIntent();
+        Nurse nurse = getIntent.getParcelableExtra(NURSE_OBJECT);
         switch (status) {
+            case SIGNING_OUT:
+                intent = new Intent(ConfirmationActivity.this, SuccessSignedActivity.class);
+                nurse.setPresent(false);
             case SIGNING_OUT_EARLY:
                 intent = new Intent(ConfirmationActivity.this, EarlySignoutActivity.class);
+                nurse.setPresent(false);
                 break;
             default:
                 intent = new Intent(ConfirmationActivity.this, SuccessSignedActivity.class);
+                nurse.setPresent(true); //Signing in. The rest are variations of signing out
         }
-
+        NurseHelper nurseHelper = new NurseHelper();
+        nurseHelper.saveNurse(nurse);
         intent.putExtra(MainActivity.NAME_ID_EXTRA, profileName);
         intent.putExtra(SIGNING_STATUS_EXTRA, status.ordinal());
         startActivity(intent);

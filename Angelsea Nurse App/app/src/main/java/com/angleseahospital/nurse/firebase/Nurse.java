@@ -1,6 +1,9 @@
 package com.angleseahospital.nurse.firebase;
 
-public class Nurse {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Nurse implements Parcelable{
     private String id;
     private String name_first;
     private String name_last;
@@ -9,11 +12,31 @@ public class Nurse {
 
     public Nurse() {  }
 
-    public Nurse(String name_first, String name_last, String pin) {
+    public Nurse(String name_first, String name_last, String pin){
         this.name_first = name_first;
         this.name_last = name_last;
         this.pin = pin;
     }
+
+    protected Nurse(Parcel in) {
+        id = in.readString();
+        name_first = in.readString();
+        name_last = in.readString();
+        pin = in.readString();
+        present = in.readByte() != 0;
+    }
+
+    public static final Creator<Nurse> CREATOR = new Creator<Nurse>() {
+        @Override
+        public Nurse createFromParcel(Parcel in) {
+            return new Nurse(in);
+        }
+
+        @Override
+        public Nurse[] newArray(int size) {
+            return new Nurse[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -53,5 +76,20 @@ public class Nurse {
 
     public void setPresent(boolean present) {
         this.present = present;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name_first);
+        dest.writeString(name_last);
+        dest.writeString(pin);
+        dest.writeByte((byte) (present ? 1 : 0));
+
     }
 }
