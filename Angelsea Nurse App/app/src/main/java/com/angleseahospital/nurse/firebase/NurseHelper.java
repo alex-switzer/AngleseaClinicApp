@@ -43,11 +43,8 @@ public class NurseHelper {
         public void onDataChange(DataSnapshot dataSnapshot) {
             ArrayList<Nurse> newNurses = new ArrayList<>();
             for (DataSnapshot ds: dataSnapshot.getChildren()) {
-                Nurse nurse = new Nurse();
+                Nurse nurse = ds.getValue(Nurse.class);
                 nurse.setId(ds.getKey());
-                nurse.setName_first(ds.child("name_first").getValue(String.class));
-                nurse.setName_last(ds.child("name_last").getValue(String.class));
-                nurse.setPin(ds.child("pin").getValue(String.class));
                 newNurses.add(nurse);
             }
             nurses.setValue(newNurses);

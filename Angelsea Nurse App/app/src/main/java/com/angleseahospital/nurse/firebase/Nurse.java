@@ -5,6 +5,7 @@ public class Nurse {
     private String name_first;
     private String name_last;
     private String pin;
+    private boolean present;
 
     public Nurse() {  }
 
@@ -46,5 +47,11 @@ public class Nurse {
         this.pin = pin;
     }
 
+    public boolean isPresent() {
+        return present;
+    }
 
+    public void setPresent(boolean present) {
+        this.present = present;
+    }
 }
