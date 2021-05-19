@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
@@ -26,8 +27,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        /*FirebaseApp.initializeApp(this);
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build());
@@ -40,9 +41,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     RC_SIGN_IN);
         } else {
 
-/*
+*//*
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
+        setSupportActionBar(toolbar);*//*
 
             drawer = findViewById(R.id.draw_layout);
             navigationView = findViewById(R.id.nav_view);
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Home()).commit();
                 navigationView.setCheckedItem(R.id.nav_home);
             }
-        }
+        }*/
     }
 
     @Override
