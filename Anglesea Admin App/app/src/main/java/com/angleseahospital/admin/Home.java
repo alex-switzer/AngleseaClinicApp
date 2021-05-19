@@ -39,6 +39,13 @@ public class Home extends Fragment {
         RecyclerView rc_nurse = v.findViewById(R.id.rc_nurse);
         rc_nurse.setHasFixedSize(true);
 
+        v.findViewById(R.id.btn_addNurse).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.changeCurrentFragment(getActivity(), getParentFragmentManager(), new AddNurse(), R.id.nav_addNurse);
+            }
+        });
+
         //TODO: Link the home page recyclerview with nurses in database
         /*NurseHelper nurseHelper = new NurseHelper();
         nurseHelper.getNurses().observe(getViewLifecycleOwner(), new Observer<ArrayList<Nurse>>() {
@@ -50,4 +57,5 @@ public class Home extends Fragment {
             }
         });*/
     }
+
 }

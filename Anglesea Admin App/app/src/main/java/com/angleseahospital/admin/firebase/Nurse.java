@@ -32,6 +32,11 @@ public class Nurse {
         this.id = id;
     }
 
+    @Exclude
+    public String getFullname() {
+        return name_first + " " + name_last;
+    }
+
     public String getName_first() {
         return name_first;
     }

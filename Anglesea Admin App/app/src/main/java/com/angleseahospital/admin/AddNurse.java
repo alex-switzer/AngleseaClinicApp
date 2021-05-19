@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class AddNurse  extends Fragment {
+public class AddNurse extends Fragment {
 
     @Nullable
     @Override

@@ -64,7 +64,7 @@ public class NurseAdapter extends RecyclerView.Adapter<NurseAdapter.NurseViewHol
             super(itemView);
 
             //TODO: find text views
-            nameTxt = (TextView) itemView.findViewById(R.id.text_view_nurse_name);
+            nameTxt = itemView.findViewById(R.id.nurseItem_txt_name);
 
             itemView.setOnClickListener(this);
         }

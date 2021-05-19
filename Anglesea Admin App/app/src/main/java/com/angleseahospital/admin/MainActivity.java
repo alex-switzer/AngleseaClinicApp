@@ -1,13 +1,17 @@
 package com.angleseahospital.admin;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.firebase.ui.auth.AuthUI;
@@ -21,7 +25,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
-    private NavigationView navigationView;
+    public NavigationView navigationView;
     public static final int RC_SIGN_IN = 1;
 
     @Override
@@ -107,6 +111,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //error logging in
             }
         }
+    }
+
+    public static void changeCurrentFragment(@Nullable Object host, FragmentManager manager, @NonNull Fragment fragment, int nav_ID) {
+        manager.beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        if (host != null && host.getClass().equals(MainActivity.class))
+            ((MainActivity) host).navigationView.setCheckedItem(nav_ID);
     }
 
 }
