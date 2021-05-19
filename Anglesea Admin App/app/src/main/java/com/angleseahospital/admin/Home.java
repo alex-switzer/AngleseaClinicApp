@@ -22,19 +22,22 @@ import java.util.ArrayList;
 
 public class Home extends Fragment {
 
-    private RecyclerView rc_nurse;
-    private NurseHelper nurseHelper;
     private NurseAdapter recyclerViewAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_add_nurse, container, false);
+        return inflater.inflate(R.layout.activity_home, container, true);
+    }
 
-        rc_nurse = v.findViewById(R.id.rc_nurse);
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        RecyclerView rc_nurse = getView().findViewById(R.id.rc_nurse);
         rc_nurse.setHasFixedSize(true);
-        nurseHelper = new NurseHelper();
 
+        /*NurseHelper nurseHelper = new NurseHelper();
         nurseHelper.getNurses().observe(getViewLifecycleOwner(), new Observer<ArrayList<Nurse>>() {
             @Override
             public void onChanged(ArrayList<Nurse> nurseArrayList) {
@@ -42,8 +45,6 @@ public class Home extends Fragment {
                 rc_nurse.setLayoutManager(new LinearLayoutManager(getContext()));
                 rc_nurse.setAdapter(recyclerViewAdapter);
             }
-        });
-
-        return v;
+        });*/
     }
 }
