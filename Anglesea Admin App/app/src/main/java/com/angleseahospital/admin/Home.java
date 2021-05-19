@@ -2,6 +2,9 @@ package com.angleseahospital.admin;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -45,6 +48,8 @@ public class Home extends Fragment {
                 MainActivity.changeCurrentFragment(getActivity(), getParentFragmentManager(), new AddNurse(), R.id.nav_addNurse);
             }
         });
+
+
 
         //TODO: Link the home page recyclerview with nurses in database
         /*NurseHelper nurseHelper = new NurseHelper();
