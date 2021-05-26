@@ -3,6 +3,7 @@ package com.angleseahospital.nurse;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,12 +15,15 @@ import com.andrognito.pinlockview.PinLockView;
 import com.angleseahospital.nurse.firestore.Nurse;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.util.Arrays;
 import java.util.List;
@@ -76,31 +80,36 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "pin entered: " + pin);
 
                 //Queries Firestore Nurses table for all nurses
-                db.collection("nurses").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                db.collection("nurses")
+                        .whereEqualTo("pin", pin) //Get all nurses with the pin
+                        .get(Source.CACHE).continueWith(new Continuation<QuerySnapshot, Object>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful())
-                            //Loop through all nurses
-                            for (QueryDocumentSnapshot nurse : task.getResult()) {
-                                //Get nurses pin and compare to entered pin
-                                String nursePin = (String) nurse.get("pin");
-                                Log.d(TAG, "nurses pin: " + nursePin);
-                                if (nursePin != null && nursePin.equals(pin)) {
-                                    signQueriedNurse(new Nurse(nurse)); //Sign the nurse
-                                    break;
-                                }
-                            }
-                        else {
-                            Log.d(TAG, "Failed to query the nurses collection: " + task.getException());
-                            //TODO: Collection 'Nurses' could not be queried. Throw error message?
-                        }
+                    public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
                         mPinLockView.resetPinLockView();
+                        if (!task.isSuccessful()) {
+                            Log.e(TAG, "Task was not successful: " + task.getException());
+                            return null;
+                        }
+
+                        QuerySnapshot result = task.getResult();
+                        if (result == null) {
+                            Log.e(TAG, "Empty response for nurses collection");
+                            return null;
+                        }
+                        //Loop through all nurses
+                        for (QueryDocumentSnapshot nurse : result) {
+                            signQueriedNurse(new Nurse(db, nurse));
+                            return null;
+                        }
+                        return null;
                     }
                 });
             }
 
             //Opens the ConfirmationActivity with the given nurse
             public void signQueriedNurse(Nurse nurse) {
+                if (nurse == null)
+                    return;
                 Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
                 intent.putExtra(NURSE_OBJECT, nurse);
                 if (nurse.present)
@@ -121,6 +130,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void signQueriedNurse(Nurse nurse) {
+        Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
+        intent.putExtra(NURSE_OBJECT, nurse);
+        if (nurse.present)
+            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT);
+        else
+            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN);
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onResume() {

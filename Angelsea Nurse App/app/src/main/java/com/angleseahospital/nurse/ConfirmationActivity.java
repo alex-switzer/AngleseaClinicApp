@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.angleseahospital.nurse.firebase.Nurse;
-import com.angleseahospital.nurse.firebase.NurseHelper;
+import com.angleseahospital.nurse.firestore.Nurse;
+import com.angleseahospital.nurse.firestore.Roster;
 
 import static com.angleseahospital.nurse.MainActivity.*;
 
@@ -20,6 +20,7 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     private String profileName = "";
     private SigningStatus status;
+    private Nurse signingNurse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +32,15 @@ public class ConfirmationActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        profileName = intent.getStringExtra(MainActivity.NAME_ID_EXTRA);
+        signingNurse = intent.getParcelableExtra(NURSE_OBJECT);
+        profileName = signingNurse.getFullName();
         status = SigningStatus.values()[intent.getIntExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal())];
+
+        if (status == SigningStatus.SIGNING_OUT) {
+            if (signingNurse.roster.earlySignout())
+                status = SigningStatus.SIGNING_OUT_EARLY;
+            signingNurse.roster.completeShift();
+        }
 
         nameTextView.setText("Welcome " + profileName);
 
@@ -40,9 +48,11 @@ public class ConfirmationActivity extends AppCompatActivity {
             case SIGNING_IN:
                 yesCorrect.setText("Yes, Sign Me In");
                 break;
-            case SIGNING_OUT_EARLY:
+
             case SIGNING_OUT:
+            case SIGNING_OUT_EARLY:
                 yesCorrect.setText("Yes, Sign Me Out");
+                break;
         }
     }
 
@@ -52,23 +62,16 @@ public class ConfirmationActivity extends AppCompatActivity {
 
     public void correct(View view) {
         Intent intent;
-        Intent getIntent = getIntent();
-        Nurse nurse = getIntent.getParcelableExtra(NURSE_OBJECT);
         switch (status) {
-            case SIGNING_OUT:
-                intent = new Intent(ConfirmationActivity.this, SuccessSignedActivity.class);
-                nurse.setPresent(false);
             case SIGNING_OUT_EARLY:
                 intent = new Intent(ConfirmationActivity.this, EarlySignoutActivity.class);
-                nurse.setPresent(false);
                 break;
+            case SIGNING_OUT:
+            case SIGNING_IN:
             default:
                 intent = new Intent(ConfirmationActivity.this, SuccessSignedActivity.class);
-                nurse.setPresent(true); //Signing in. The rest are variations of signing out
         }
-        NurseHelper nurseHelper = new NurseHelper();
-        nurseHelper.saveNurse(nurse);
-        intent.putExtra(MainActivity.NAME_ID_EXTRA, profileName);
+        intent.putExtra(NURSE_OBJECT, signingNurse);
         intent.putExtra(SIGNING_STATUS_EXTRA, status.ordinal());
         startActivity(intent);
         finish();

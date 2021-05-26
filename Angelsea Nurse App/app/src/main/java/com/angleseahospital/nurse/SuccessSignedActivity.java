@@ -7,8 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.angleseahospital.nurse.firebase.Nurse;
-import com.angleseahospital.nurse.firebase.NurseHelper;
+import com.angleseahospital.nurse.firestore.Nurse;
 
 import static com.angleseahospital.nurse.MainActivity.*;
 
@@ -21,19 +20,22 @@ public class SuccessSignedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_success_signed_in);
 
         Intent intent = getIntent();
-        String name = intent.getStringExtra(NAME_ID_EXTRA);
+
+        Nurse signingNurse = intent.getParcelableExtra(NURSE_OBJECT);
+        String name = signingNurse.getFullName();
+
         SigningStatus status = SigningStatus.values()[intent.getIntExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal())];
 
         textView_Name = findViewById(R.id.textViewSignedInName);
         switch (status) {
             case SIGNING_IN:
-                textView_Name.setText(name + " signed in");
+                textView_Name.setText(name + "\nsigned in");
                 break;
             case SIGNING_OUT_EARLY:
-                textView_Name.setText(name + " signed out early");
+                textView_Name.setText(name + "\nsigned out early");
                 break;
             case SIGNING_OUT:
-                textView_Name.setText(name + " signed out");
+                textView_Name.setText(name + "\nsigned out");
                 break;
         }
 

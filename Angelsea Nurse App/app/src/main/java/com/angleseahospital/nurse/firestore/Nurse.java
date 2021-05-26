@@ -2,8 +2,10 @@ package com.angleseahospital.nurse.firestore;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class Nurse implements Parcelable {
@@ -13,17 +15,22 @@ public class Nurse implements Parcelable {
     public String lastName;
     public String pin;
     public boolean present;
-    public String roster;
+    public String rosterRef;
+    public Roster roster;
 
     public Nurse() { /* Empty constructor for Firestore */}
 
-    public Nurse(QueryDocumentSnapshot baseNurse) {
+    public Nurse(FirebaseFirestore db, QueryDocumentSnapshot baseNurse) {
+        Log.d("NURSE DEBUGGING", "Nurse being created");
         id = baseNurse.getId();
         firstName = (String) baseNurse.get("firstname");
         lastName = (String) baseNurse.get("lastname");
         pin = (String) baseNurse.get("pin");
         present = (boolean) baseNurse.get("present");
-        roster = ((DocumentReference) baseNurse.get("roster")).getPath();
+        Log.d("NURSE DEBUGGING", "Roster being created");
+        roster = new Roster(((DocumentReference) baseNurse.get("roster")).getPath());
+        Log.d("NURSE DEBUGGING", "Roster CREATED! FINSIHED WITH NURSE");
+
     }
 
     public static final Creator<Nurse> CREATOR = new Creator<Nurse>() {
@@ -53,7 +60,7 @@ public class Nurse implements Parcelable {
         lastName = in.readString();
         pin = in.readString();
         present = in.readByte() != 0;
-        roster = in.readString();
+        roster = new Roster(in);
     }
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -61,6 +68,6 @@ public class Nurse implements Parcelable {
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(pin);
-        dest.writeString(roster);
+        roster.writeToParcel(dest, flags);
     }
 }
