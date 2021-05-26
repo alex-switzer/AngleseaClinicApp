@@ -3,7 +3,7 @@ package com.angleseahospital.nurse.firebase;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Nurse implements Parcelable{
+public class Nurse implements Parcelable {
     private String id;
     private String name_first;
     private String name_last;
