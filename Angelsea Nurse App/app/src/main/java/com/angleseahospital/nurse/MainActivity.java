@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                             .setAvailableProviders(providers)
                             .build(),
                     RC_SIGN_IN);
-        }else{
+        } else {
             nurseHelper = new NurseHelper();
         }
 
@@ -75,28 +75,16 @@ public class MainActivity extends AppCompatActivity {
                         String personName = nurse.getName_first();
                         intent.putExtra(NAME_ID_EXTRA, personName);
                         intent.putExtra(NURSE_OBJECT, (Parcelable) nurse);
-                        if(nurse.isPresent()) {
+                        if (nurse.isPresent()) {
                             if (nurse.getPin().equals("2580"))
                                 intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT_EARLY.ordinal());
                             else
                                 intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
-                        }
-                        else{
+                        } else {
                             intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal());
                         }
-
                         startActivity(intent);
                     }
-                    /*
-                    else if (pin.equals("4321")) {
-                        Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
-                        String personName = "Ben";
-
-                        intent.putExtra(NAME_ID_EXTRA, personName);
-                        intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT_EARLY.ordinal());
-                        startActivity(intent);
-                    }
-                     */
                 }
                 if (!is_found) {
                     //TODO: Add failure to sign-in
