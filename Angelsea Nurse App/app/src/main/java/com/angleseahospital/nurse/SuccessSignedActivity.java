@@ -112,7 +112,6 @@ public class SuccessSignedActivity extends AppCompatActivity {
 
         String time = Shift.get24Time();
 
-        db.collection(log)
         return db.collection(log).document("nurses").update(nurse.id + "." + time, data);
     }
 
