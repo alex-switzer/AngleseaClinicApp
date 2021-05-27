@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         mPinLockView = findViewById(R.id.pin_lock_view);
         mIndicatorDots = findViewById(R.id.indicator_dots);
+        //TODO: Add loading circle while checking the logs collection
 
         //Check if todays collection exists. If not, creates it
         check = db.collection("/logs/").document(Util.getToday()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 //Queries Firestore Nurses table for all nurses
                 db.collection("nurses")
                         .whereEqualTo("pin", pin) //Get all nurses with the pin
-                        .get(Source.CACHE).continueWith(new Continuation<QuerySnapshot, Object>() {
+                        .get(Source.SERVER).continueWith(new Continuation<QuerySnapshot, Object>() {
                     @Override
                     public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
                         mPinLockView.resetPinLockView();

@@ -13,16 +13,20 @@ import android.widget.TextView;
 import com.angleseahospital.nurse.firestore.Nurse;
 import com.angleseahospital.nurse.firestore.Shift;
 import com.angleseahospital.nurse.firestore.Util;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.angleseahospital.nurse.MainActivity.*;
 
 public class SuccessSignedActivity extends AppCompatActivity {
     private TextView textView_Name = null;
+
+    private boolean successful = false;
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -41,24 +45,29 @@ public class SuccessSignedActivity extends AppCompatActivity {
         textView_Name = findViewById(R.id.textViewSignedInName);
 
         if (status == SigningStatus.SIGNING_IN) {
-            signIn(signingNurse).addOnCompleteListener(new OnCompleteListener<Void>() {
+            signIn(signingNurse).continueWith(new Continuation<Void, Object>() {
                 @Override
-                public void onComplete(@NonNull Task<Void> task) {
+                public Object then(@NonNull Task<Void> task) throws Exception {
                     if (!task.isSuccessful()) {
                         textView_Name.setText("Failed to sign in\n" + name);
                         Log.d(TAG, "Failed to sign in: " + task.getException());
                         //TODO: Add failure animation
-                        return;
+                        return null;
                     }
 
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("present", true);
+                    db.collection("nurses").document(signingNurse.id).update(data);
+
                     textView_Name.setText(name + "\nsigned in");
+                    return null;
                 }
             });
             //TODO: Display roster once signed in. Note: Nurse.Roster.build() to build roster before retrieving
         } else {
-            signOut(signingNurse, null).addOnCompleteListener(new OnCompleteListener<Void>() {
+            signOut(signingNurse, null).continueWith(new Continuation<Void, Object>() {
                 @Override
-                public void onComplete(@NonNull Task<Void> task) {
+                public Object then(@NonNull Task<Void> task) throws Exception {
                     if (!task.isSuccessful()) {
                         if (status == SigningStatus.SIGNING_OUT)
                             textView_Name.setText("Sign out failed\n" + name);
@@ -66,13 +75,18 @@ public class SuccessSignedActivity extends AppCompatActivity {
                             textView_Name.setText("Early sign out failed\n" + name);
                         Log.d(TAG, "Failed to sign out: " + task.getException());
                         //TODO: Add failure animation
-                        return;
+                        return null;
                     }
+
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("present", false);
+                    db.collection("nurses").document(signingNurse.id).update(data);
 
                     if (status == SigningStatus.SIGNING_OUT)
                         textView_Name.setText(name + "\nsigned out");
                     else if (status == SigningStatus.SIGNING_OUT_EARLY)
                         textView_Name.setText(name + "\nsigned out early");
+                    return null;
                 }
             });
         }
@@ -114,7 +128,7 @@ public class SuccessSignedActivity extends AppCompatActivity {
         String time = Shift.get24Time();
         Log.d("SIGN OUT", "time" + time);
         Log.d("SIGN OUT", "log: " + log);
-        return db.collection(log).document("nurse").update(nurse.id + "." + time, data);
+        return db.collection(log).document("nurses").update(nurse.id + "." + time, data);
     }
 
     public void finish(View view){
