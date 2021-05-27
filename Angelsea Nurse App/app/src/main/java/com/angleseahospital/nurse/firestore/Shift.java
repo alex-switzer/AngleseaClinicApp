@@ -89,4 +89,15 @@ public class Shift {
         this.day = day;
         this.type = type;
     }
+
+    public static String get24Time() {
+        Calendar cal = Calendar.getInstance();
+
+        String hour = cal.get(Calendar.HOUR_OF_DAY) + "";
+        hour = hour.length() == 1 ? "0" + hour : hour;
+
+        String min = cal.get(Calendar.MINUTE) + "";
+        min = min.length() == 1 ? "0" + min : min;
+        return hour + ":" + min;
+    }
 }

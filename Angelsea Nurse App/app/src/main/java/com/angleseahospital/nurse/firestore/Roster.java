@@ -28,8 +28,9 @@ public class Roster implements Parcelable {
         this.docRef = docRef;
     }
 
-    public Roster build(FirebaseFirestore db) { return build(db, docRef); }
-    public Roster build(FirebaseFirestore db, String docRef) {
+    public void build(FirebaseFirestore db, OnCompleteListener listener) { build(db, listener, docRef); }
+    public void build(FirebaseFirestore db, OnCompleteListener listener, String docRef) {
+        this.docRef = docRef;
         db.document(docRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -40,8 +41,7 @@ public class Roster implements Parcelable {
                     days.put(shift, ShiftType.fromString((String) documentSnapshot.get(shift.name().toLowerCase())));
                 built = true;
             }
-        });
-        return this;
+        }).addOnCompleteListener(listener);
     }
 
     public Shift getNextUncompletedShift() {
