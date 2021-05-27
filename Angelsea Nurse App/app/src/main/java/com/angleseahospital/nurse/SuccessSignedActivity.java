@@ -57,6 +57,7 @@ public class SuccessSignedActivity extends AppCompatActivity {
 
                     Map<String, Object> data = new HashMap<>();
                     data.put("present", true);
+                    data.put("lastSign", Shift.get24Time());
                     db.collection("nurses").document(signingNurse.id).update(data);
 
                     textView_Name.setText(name + "\nsigned in");
@@ -80,6 +81,7 @@ public class SuccessSignedActivity extends AppCompatActivity {
 
                     Map<String, Object> data = new HashMap<>();
                     data.put("present", false);
+                    data.put("lastSign", Shift.get24Time());
                     db.collection("nurses").document(signingNurse.id).update(data);
 
                     if (status == SigningStatus.SIGNING_OUT)

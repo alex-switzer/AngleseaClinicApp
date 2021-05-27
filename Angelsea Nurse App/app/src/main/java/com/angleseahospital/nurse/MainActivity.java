@@ -14,6 +14,7 @@ import com.andrognito.pinlockview.PinLockListener;
 import com.andrognito.pinlockview.PinLockView;
 
 import com.angleseahospital.nurse.firestore.Nurse;
+import com.angleseahospital.nurse.firestore.Shift;
 import com.angleseahospital.nurse.firestore.Util;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -147,6 +148,12 @@ public class MainActivity extends AppCompatActivity {
             public void signQueriedNurse(Nurse nurse) {
                 if (nurse == null)
                     return;
+
+                if (nurse.lastSign.equals(Shift.get24Time())) {
+                    //TODO: Show error for signing again too soon
+                    return;
+                }
+
                 Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
                 intent.putExtra(NURSE_OBJECT, nurse);
                 if (nurse.present)

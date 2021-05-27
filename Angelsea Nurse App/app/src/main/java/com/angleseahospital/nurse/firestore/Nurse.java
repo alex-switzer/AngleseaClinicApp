@@ -16,6 +16,7 @@ public class Nurse implements Parcelable {
     public String pin;
     public boolean present;
     public String rosterRef;
+    public String lastSign;
     public Roster roster;
 
     public Nurse() { /* Empty constructor for Firestore */}
@@ -26,6 +27,7 @@ public class Nurse implements Parcelable {
         lastName = (String) baseNurse.get("lastname");
         pin = (String) baseNurse.get("pin");
         present = (boolean) baseNurse.get("present");
+        lastSign = (String) baseNurse.get("lastSign");
         roster = new Roster(((DocumentReference) baseNurse.get("roster")).getPath());
     }
 
