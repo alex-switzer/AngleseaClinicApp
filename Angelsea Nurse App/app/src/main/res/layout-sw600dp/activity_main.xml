@@ -20,6 +20,7 @@
 
     <TextView
         android:id="@+id/profile_name"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/profile_image"
@@ -48,6 +49,7 @@
 
     <com.andrognito.pinlockview.PinLockView
         android:id="@+id/pin_lock_view"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/indicator_dots"

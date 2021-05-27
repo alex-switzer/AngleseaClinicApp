@@ -13,7 +13,7 @@ public class Util {
 
         String today = cal.get(Calendar.YEAR) + "-";
 
-        String monOfYear = cal.get(Calendar.MONTH) + "";
+        String monOfYear = cal.get(Calendar.MONTH) + 1 + "";
         today += (monOfYear.length() == 1 ? "0" + monOfYear : monOfYear) + "-";
 
         String dayOfMonth = cal.get(Calendar.DAY_OF_MONTH) + "";

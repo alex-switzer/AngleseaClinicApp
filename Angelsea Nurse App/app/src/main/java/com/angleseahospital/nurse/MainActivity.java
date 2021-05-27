@@ -7,12 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.andrognito.pinlockview.IndicatorDots;
 import com.andrognito.pinlockview.PinLockListener;
 import com.andrognito.pinlockview.PinLockView;
 
 import com.angleseahospital.nurse.firestore.Nurse;
+import com.angleseahospital.nurse.firestore.Util;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.Continuation;
@@ -20,13 +22,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "PinLockView";
@@ -45,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     private PinLockView mPinLockView;
     private IndicatorDots mIndicatorDots;
+
+    private Task<DocumentSnapshot> check;
+    private boolean todayDirectoryExists = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +74,35 @@ public class MainActivity extends AppCompatActivity {
 
         mPinLockView = findViewById(R.id.pin_lock_view);
         mIndicatorDots = findViewById(R.id.indicator_dots);
+
+        //Check if todays collection exists. If not, creates it
+        check = db.collection("/logs/").document(Util.getToday()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot result = task.getResult();
+                    todayDirectoryExists = result.exists();
+                    Log.d(TAG, "EXISTS: " + todayDirectoryExists);
+                }
+            }
+        }).continueWith(new Continuation<DocumentSnapshot, DocumentSnapshot>() {
+            @Override
+            public DocumentSnapshot then(@NonNull Task<DocumentSnapshot> task) throws Exception {
+                if (!todayDirectoryExists) {
+                    Map<String, Object> data = new HashMap<>();
+                    db.collection("/logs/").document(Util.getToday() + "/signings/nurses").set(data).continueWith(new Continuation<Void, Object>() {
+                        @Override
+                        public Object then(@NonNull Task<Void> task) throws Exception {
+                            mPinLockView.setVisibility(View.VISIBLE);
+                            mIndicatorDots.setVisibility(View.VISIBLE);
+                            return null;
+                        }
+                    });
+                }
+                return null;
+            }
+        });
+
         mIndicatorDots.setBackgroundColor(getColor(R.color.greyish));
         mPinLockView.attachIndicatorDots(mIndicatorDots);
         mPinLockView.setPinLength(4);
@@ -78,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(final String pin) {
                 Log.d(TAG, "pin entered: " + pin);
-
                 //Queries Firestore Nurses table for all nurses
                 db.collection("nurses")
                         .whereEqualTo("pin", pin) //Get all nurses with the pin
@@ -113,9 +149,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
                 intent.putExtra(NURSE_OBJECT, nurse);
                 if (nurse.present)
-                    intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT);
+                    intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
                 else
-                    intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN);
+                    intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal());
                 startActivity(intent);
             }
 
@@ -135,9 +171,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
         intent.putExtra(NURSE_OBJECT, nurse);
         if (nurse.present)
-            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT);
+            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
         else
-            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN);
+            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal());
         startActivity(intent);
     }
 

@@ -24,7 +24,7 @@ import static com.angleseahospital.nurse.MainActivity.*;
 public class SuccessSignedActivity extends AppCompatActivity {
     private TextView textView_Name = null;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +39,7 @@ public class SuccessSignedActivity extends AppCompatActivity {
 
         String name = signingNurse.getFullName();
         textView_Name = findViewById(R.id.textViewSignedInName);
+
         if (status == SigningStatus.SIGNING_IN) {
             signIn(signingNurse).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
@@ -54,9 +55,7 @@ public class SuccessSignedActivity extends AppCompatActivity {
                 }
             });
             //TODO: Display roster once signed in. Note: Nurse.Roster.build() to build roster before retrieving
-
         } else {
-
             signOut(signingNurse, null).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -96,23 +95,26 @@ public class SuccessSignedActivity extends AppCompatActivity {
 
     private Task<Void> signIn(Nurse nurse) {
         String log = Util.getTodayLogPath();
-        log += "/signings/";
+        log += "/signings";
 
         String time = Shift.get24Time();
+        Log.d("SIGN IN", "time: " + time);
+        Log.d("SIGN IN", "log: " + log);
         return db.collection(log).document("nurses").update(nurse.id + "." + time, true);
     }
 
     private Task<Void> signOut(Nurse nurse, String reason) {
         String log = Util.getTodayLogPath();
-        log += "/signings/";
+        log += "/signings";
 
         HashMap<String, Object> data = new HashMap<>();
         data.put("reason", reason);
         data.put("signedIn", false);
 
         String time = Shift.get24Time();
-
-        return db.collection(log).document("nurses").update(nurse.id + "." + time, data);
+        Log.d("SIGN OUT", "time" + time);
+        Log.d("SIGN OUT", "log: " + log);
+        return db.collection(log).document("nurse").update(nurse.id + "." + time, data);
     }
 
     public void finish(View view){

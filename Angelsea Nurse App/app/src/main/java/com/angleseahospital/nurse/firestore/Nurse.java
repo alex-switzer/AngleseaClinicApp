@@ -21,16 +21,12 @@ public class Nurse implements Parcelable {
     public Nurse() { /* Empty constructor for Firestore */}
 
     public Nurse(FirebaseFirestore db, QueryDocumentSnapshot baseNurse) {
-        Log.d("NURSE DEBUGGING", "Nurse being created");
         id = baseNurse.getId();
         firstName = (String) baseNurse.get("firstname");
         lastName = (String) baseNurse.get("lastname");
         pin = (String) baseNurse.get("pin");
         present = (boolean) baseNurse.get("present");
-        Log.d("NURSE DEBUGGING", "Roster being created");
         roster = new Roster(((DocumentReference) baseNurse.get("roster")).getPath());
-        Log.d("NURSE DEBUGGING", "Roster CREATED! FINSIHED WITH NURSE");
-
     }
 
     public static final Creator<Nurse> CREATOR = new Creator<Nurse>() {
