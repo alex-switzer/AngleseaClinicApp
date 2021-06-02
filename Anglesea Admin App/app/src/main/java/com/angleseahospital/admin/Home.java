@@ -2,27 +2,16 @@ package com.angleseahospital.admin;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.angleseahospital.admin.firebase.Nurse;
-import com.angleseahospital.admin.firebase.NurseAdapter;
-import com.angleseahospital.admin.firebase.NurseHelper;
-
-import java.util.ArrayList;
+import com.angleseahospital.admin.firestore.NurseAdapter;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Home extends Fragment {
 
@@ -39,9 +28,6 @@ public class Home extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        RecyclerView rc_nurse = v.findViewById(R.id.rc_nurse);
-        rc_nurse.setHasFixedSize(true);
-
         v.findViewById(R.id.btn_addNurse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,18 +35,11 @@ public class Home extends Fragment {
             }
         });
 
-
-
-        //TODO: Link the home page recyclerview with nurses in database
-        /*NurseHelper nurseHelper = new NurseHelper();
-        nurseHelper.getNurses().observe(getViewLifecycleOwner(), new Observer<ArrayList<Nurse>>() {
-            @Override
-            public void onChanged(ArrayList<Nurse> nurseArrayList) {
-                recyclerViewAdapter = new NurseAdapter(getContext(), nurseArrayList);
-                rc_nurse.setLayoutManager(new LinearLayoutManager(getContext()));
-                rc_nurse.setAdapter(recyclerViewAdapter);
-            }
-        });*/
+        RecyclerView rv_nurse = v.findViewById(R.id.rv_home_nurse);
+        NurseAdapter nurseAdapter = new NurseAdapter();
+        
+        rv_nurse.setHasFixedSize(true);
+        rv_nurse.setAdapter(nurseAdapter);
     }
 
 }

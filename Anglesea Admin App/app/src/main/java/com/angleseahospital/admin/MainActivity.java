@@ -28,26 +28,11 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     public NavigationView navigationView;
-    public static final int RC_SIGN_IN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drawer_menu);
-
-        /*FirebaseApp.initializeApp(this);
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build());
-
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
-                            .build(),
-                    RC_SIGN_IN);
-        }
-*/
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -100,20 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            if (resultCode == RESULT_OK) {
-                //just logged in
-            } else {
-                //error logging in
-            }
-        }
-    }
 
     public static void changeCurrentFragment(@Nullable Object host, FragmentManager manager, @NonNull Fragment fragment, int nav_ID) {
         manager.beginTransaction().replace(R.id.fragment_container, fragment).commit();

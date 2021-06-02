@@ -8,8 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 public class AddNurse extends Fragment {
     private View v;
