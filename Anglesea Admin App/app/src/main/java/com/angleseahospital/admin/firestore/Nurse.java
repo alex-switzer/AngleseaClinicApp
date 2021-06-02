@@ -21,7 +21,7 @@ public class Nurse implements Parcelable {
 
     public Nurse() { /* Empty constructor for Firestore */}
 
-    public Nurse(FirebaseFirestore db, QueryDocumentSnapshot baseNurse) {
+    public Nurse(QueryDocumentSnapshot baseNurse) {
         id = baseNurse.getId();
         firstName = (String) baseNurse.get("firstname");
         lastName = (String) baseNurse.get("lastname");

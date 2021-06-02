@@ -11,6 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angleseahospital.admin.R;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -30,11 +36,32 @@ public class NurseAdapter extends RecyclerView.Adapter {
     }
 
     public NurseAdapter() {
-        //TODO: Load nurses from Firestore
+        FirebaseFirestore.getInstance().collection("nurses").get().continueWith(new Continuation<QuerySnapshot, Object>() {
+            @Override
+            public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                if (!task.isSuccessful())
+                    return null;
+
+                QuerySnapshot query;
+                if ((query = task.getResult()) == null)
+                    return null;
+
+                nurses = new ArrayList<>();
+                for (QueryDocumentSnapshot doc : query)
+                    nurses.add(new Nurse(doc));
+                notifyDataSetChanged();
+                return null;
+            }
+        });
     }
 
     public NurseAdapter(ArrayList<Nurse> nurses) {
         this.nurses = nurses;
+    }
+
+    public void addNurse(Nurse nurse) {
+        nurses.add(nurse);
+        //TODO: Sort by ID?
     }
 
     @NonNull
@@ -52,7 +79,8 @@ public class NurseAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
+        if (nurses == null)
+            return 0;
         return nurses.size();
     }
-
 }

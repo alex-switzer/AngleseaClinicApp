@@ -3,6 +3,7 @@ package com.angleseahospital.admin;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.angleseahospital.admin.firestore.Nurse;
 import com.angleseahospital.admin.firestore.NurseAdapter;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -40,6 +42,7 @@ public class Home extends Fragment {
         
         rv_nurse.setHasFixedSize(true);
         rv_nurse.setAdapter(nurseAdapter);
+        rv_nurse.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
 }
