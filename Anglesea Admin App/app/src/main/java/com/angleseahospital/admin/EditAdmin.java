@@ -14,7 +14,7 @@ public class EditAdmin extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_edit_admin,container,false);
+        return inflater.inflate(R.layout.frag_editadmin,container,false);
 
     }
 }

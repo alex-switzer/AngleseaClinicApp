@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
+    android:layout_height="wrap_content"
     android:layout_marginHorizontal="8dp"
     android:layout_marginTop="8dp"
     app:cardCornerRadius="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/light_grey"
         android:paddingHorizontal="8dp"
         android:paddingVertical="2dp">
@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Nurse placeholder name"
-            android:textSize="16dp"
+            android:textSize="22dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/nurseItem_guideline"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,8 +28,8 @@
 
         <ImageView
             android:id="@+id/nurseItem_img_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/ic_edit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

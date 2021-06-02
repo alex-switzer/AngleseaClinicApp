@@ -14,7 +14,7 @@ public class ViewEntireRoster extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_view_entire_roster,container,false);
+        return inflater.inflate(R.layout.frag_viewentireroster,container,false);
 
     }
 }

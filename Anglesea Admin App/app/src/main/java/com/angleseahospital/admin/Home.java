@@ -11,19 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.angleseahospital.admin.firestore.Nurse;
 import com.angleseahospital.admin.firestore.NurseAdapter;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Home extends Fragment {
 
-    private NurseAdapter recyclerViewAdapter;
+    public NurseAdapter nurseAdapter;
     private View v;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return v = inflater.inflate(R.layout.activity_home, container, false);
+        return v = inflater.inflate(R.layout.frag_home, container, false);
     }
 
     @Override
@@ -33,7 +31,7 @@ public class Home extends Fragment {
         v.findViewById(R.id.btn_addNurse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.changeCurrentFragment(getActivity(), getParentFragmentManager(), new AddNurse(), R.id.nav_addNurse);
+                MainActivity.changeCurrentFragment(getActivity(), getParentFragmentManager(), new AddEditNurse(), R.id.nav_addNurse);
             }
         });
 
@@ -43,6 +41,12 @@ public class Home extends Fragment {
         rv_nurse.setHasFixedSize(true);
         rv_nurse.setAdapter(nurseAdapter);
         rv_nurse.setLayoutManager(new LinearLayoutManager(getContext()));
-    }
 
+        nurseAdapter.setOnItemClickListener(new NurseAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                MainActivity.changeCurrentFragment(getHost(), getParentFragmentManager(), new AddEditNurse(nurseAdapter.get(position)), R.id.nav_addNurse);
+            }
+        });
+    }
 }

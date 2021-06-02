@@ -48,9 +48,9 @@
         android:gravity="center"
         android:text="Pin"
         android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/editText"
+        app:layout_constraintBottom_toBottomOf="@+id/etxt_pin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editText" />
+        app:layout_constraintTop_toTopOf="@+id/etxt_pin" />
 
     <EditText
         android:id="@+id/etxt_lastname"
@@ -58,13 +58,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:hint="Last name"
-        app:layout_constraintBottom_toTopOf="@+id/editText"
+        app:layout_constraintBottom_toTopOf="@+id/etxt_pin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/etxt_firstname" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/etxt_pin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
