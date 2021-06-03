@@ -1,4 +1,4 @@
-package com.angleseahospital.admin;
+package com.angleseahospital.admin.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import com.angleseahospital.admin.R;
 import com.angleseahospital.admin.firestore.Constants;
 import com.angleseahospital.admin.firestore.Nurse;
 import com.angleseahospital.admin.firestore.Shift;

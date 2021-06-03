@@ -13,6 +13,10 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.angleseahospital.admin.fragments.AddEditNurse;
+import com.angleseahospital.admin.fragments.EditAdmin;
+import com.angleseahospital.admin.fragments.Home;
+import com.angleseahospital.admin.fragments.ViewEntireRoster;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

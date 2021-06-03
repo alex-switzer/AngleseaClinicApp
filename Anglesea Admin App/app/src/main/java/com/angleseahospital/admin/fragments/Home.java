@@ -1,4 +1,4 @@
-package com.angleseahospital.admin;
+package com.angleseahospital.admin.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.angleseahospital.admin.MainActivity;
+import com.angleseahospital.admin.R;
 import com.angleseahospital.admin.firestore.NurseAdapter;
 
 public class Home extends Fragment {
@@ -21,7 +23,7 @@ public class Home extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return v = inflater.inflate(R.layout.frag_home, container, false);
+        return v = inflater.inflate(R.layout.frag_Home, container, false);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.angleseahospital.nurse.firestore;
+package com.angleseahospital.nurse.classes;
 
 import java.util.Calendar;
 import java.util.Date;

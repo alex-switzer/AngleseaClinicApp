@@ -1,4 +1,4 @@
-package com.angleseahospital.admin;
+package com.angleseahospital.admin.fragments;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.angleseahospital.admin.R;
 
 public class ViewEntireRoster extends Fragment {
 
