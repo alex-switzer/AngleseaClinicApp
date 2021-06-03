@@ -3,8 +3,6 @@ package com.angleseahospital.nurse.firestore;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 public class Nurse implements Parcelable {

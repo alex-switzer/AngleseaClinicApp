@@ -1,7 +1,5 @@
 package com.angleseahospital.nurse.firestore;
 
-import androidx.annotation.NonNull;
-
 import java.time.LocalDate;
 import java.util.Calendar;
 
