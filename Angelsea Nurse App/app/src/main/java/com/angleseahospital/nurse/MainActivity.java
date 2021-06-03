@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         //Loop through all nurses
                         for (QueryDocumentSnapshot nurse : result) {
-                            signQueriedNurse(new Nurse(db, nurse));
+                            signQueriedNurse(new Nurse(nurse));
                             return null;
                         }
                         return null;

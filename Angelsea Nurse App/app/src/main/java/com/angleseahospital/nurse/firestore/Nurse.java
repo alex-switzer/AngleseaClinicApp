@@ -2,7 +2,6 @@ package com.angleseahospital.nurse.firestore;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -17,18 +16,18 @@ public class Nurse implements Parcelable {
     public boolean present;
     public String rosterRef;
     public String lastSign;
-    public Roster roster;
+    public NurseRoster roster;
 
     public Nurse() { /* Empty constructor for Firestore */}
 
-    public Nurse(FirebaseFirestore db, QueryDocumentSnapshot baseNurse) {
+    public Nurse(QueryDocumentSnapshot baseNurse) {
         id = baseNurse.getId();
         firstName = (String) baseNurse.get("firstname");
         lastName = (String) baseNurse.get("lastname");
         pin = (String) baseNurse.get("pin");
         present = (boolean) baseNurse.get("present");
         lastSign = (String) baseNurse.get("lastSign");
-        roster = new Roster(((DocumentReference) baseNurse.get("roster")).getPath());
+        roster = new NurseRoster((String) baseNurse.get("roster"));
     }
 
     public static final Creator<Nurse> CREATOR = new Creator<Nurse>() {
@@ -58,7 +57,7 @@ public class Nurse implements Parcelable {
         lastName = in.readString();
         pin = in.readString();
         present = in.readByte() != 0;
-        roster = new Roster(in);
+        roster = new NurseRoster(in);
     }
     @Override
     public void writeToParcel(Parcel dest, int flags) {

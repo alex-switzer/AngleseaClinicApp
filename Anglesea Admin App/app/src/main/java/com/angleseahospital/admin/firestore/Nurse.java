@@ -1,14 +1,26 @@
 package com.angleseahospital.admin.firestore;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.firestore.DocumentReference;
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Nurse implements Parcelable {
+
+    public static final String FIELD_FIRSTNAME = "firstname";
+    public static final String FIELD_LASTNAME = "lastname";
+    public static final String FIELD_LASTSIGN = "lastSign";
+    public static final String FIELD_PIN = "pin";
+    public static final String FIELD_PRESENT = "present";
+    public static final String FIELD_ROSTER = "roster";
 
     public String id;
     public String firstName;
@@ -17,18 +29,18 @@ public class Nurse implements Parcelable {
     public boolean present;
     public String rosterRef;
     public String lastSign;
-    public Roster roster;
+    public NurseRoster roster;
 
     public Nurse() { /* Empty constructor for Firestore */}
 
     public Nurse(QueryDocumentSnapshot baseNurse) {
         id = baseNurse.getId();
-        firstName = (String) baseNurse.get("firstname");
-        lastName = (String) baseNurse.get("lastname");
-        pin = (String) baseNurse.get("pin");
-        present = (boolean) baseNurse.get("present");
-        lastSign = (String) baseNurse.get("lastSign");
-        roster = new Roster(((DocumentReference) baseNurse.get("roster")).getPath());
+        firstName = (String) baseNurse.get(FIELD_FIRSTNAME);
+        lastName = (String) baseNurse.get(FIELD_LASTNAME);
+        pin = (String) baseNurse.get(FIELD_PIN);
+        present = (boolean) baseNurse.get(FIELD_PRESENT);
+        lastSign = (String) baseNurse.get(FIELD_LASTSIGN);
+        roster = new NurseRoster((String) baseNurse.get(FIELD_ROSTER));
     }
 
     public static final Creator<Nurse> CREATOR = new Creator<Nurse>() {
@@ -47,6 +59,24 @@ public class Nurse implements Parcelable {
         return firstName + " " + lastName;
     }
 
+    public Task<Void> updateCredentials() {
+        Map<String, Object> data = new HashMap<>();
+        data.put(FIELD_FIRSTNAME, firstName);
+        data.put(FIELD_LASTNAME, lastName);
+        data.put(FIELD_PIN, pin);
+        data.put(FIELD_PRESENT, present);
+        data.put(FIELD_LASTSIGN, lastSign);
+        data.put(FIELD_ROSTER, roster.getReference());
+
+        return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).update(data);
+    }
+
+    public Task<Object> updateRoster() {
+        return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).update(FIELD_ROSTER, roster.getReference()).continueWith(task -> {
+            roster.update(id);
+            return null;
+        });
+    }
     //--Parcelable stuff--
     @Override
     public int describeContents() {
@@ -58,7 +88,7 @@ public class Nurse implements Parcelable {
         lastName = in.readString();
         pin = in.readString();
         present = in.readByte() != 0;
-        roster = new Roster(in);
+        roster = new NurseRoster(in);
     }
     @Override
     public void writeToParcel(Parcel dest, int flags) {

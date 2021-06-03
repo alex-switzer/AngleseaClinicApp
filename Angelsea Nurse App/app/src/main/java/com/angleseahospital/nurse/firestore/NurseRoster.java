@@ -2,14 +2,11 @@ package com.angleseahospital.nurse.firestore;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import com.angleseahospital.nurse.firestore.Shift.*;
@@ -17,14 +14,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
-public class Roster implements Parcelable {
+public class NurseRoster implements Parcelable {
 
     private String docRef;
-    private boolean built = false;
 
     private HashMap<ShiftDay, ShiftType> days = new HashMap<>();
 
-    public Roster(String docRef) {
+    public NurseRoster(String docRef) {
         this.docRef = docRef;
     }
 
@@ -37,24 +33,42 @@ public class Roster implements Parcelable {
                 if (!task.isSuccessful())
                     return;
                 DocumentSnapshot documentSnapshot = task.getResult();
-                for (ShiftDay shift : ShiftDay.values())
-                    days.put(shift, ShiftType.fromString((String) documentSnapshot.get(shift.name().toLowerCase())));
-                built = true;
+                if (documentSnapshot == null)
+                    return;
+
+                String value;
+                days = new HashMap<>();
+                for (ShiftDay shift : ShiftDay.values()) {
+                    value = (String) documentSnapshot.get(shift.name().toLowerCase());
+                    if (value == null)
+                        continue;
+                    days.put(shift, ShiftType.fromString(value));
+                }
             }
         }).addOnCompleteListener(listener);
     }
 
     public Shift getNextUncompletedShift() {
-        if (!built)
+        if (!isBuilt())
             return null;
-        for (ShiftDay shift : ShiftDay.values())
-            if (!days.get(shift).isCompleted())
-                return new Shift(shift, days.get(shift));
+        for (ShiftDay day : ShiftDay.values()) {
+            ShiftType type = days.get(day);
+
+            if (type == null)
+                continue;
+
+            if (!type.isCompleted())
+                return new Shift(day, days.get(day));
+        }
         return null;
     }
 
+    public boolean isBuilt() {
+        return days != null;
+    }
+
     public boolean earlySignout() {
-        if (!built)
+        if (!isBuilt())
             return false;
         Shift unShift = getNextUncompletedShift();
         if (unShift == null)
@@ -64,7 +78,7 @@ public class Roster implements Parcelable {
     }
 
     public Shift completeShift() {
-        if (!built)
+        if (!isBuilt())
             return null;
         Shift unShift = getNextUncompletedShift();
         if (unShift == null)
@@ -77,31 +91,33 @@ public class Roster implements Parcelable {
 
 
     /*--Parcelable stuff--*/
-    public static final Creator<Roster> CREATOR = new Creator<Roster>() {
+    public static final Creator<NurseRoster> CREATOR = new Creator<NurseRoster>() {
         @Override
-        public Roster createFromParcel(Parcel in) {
-            return new Roster(in);
+        public NurseRoster createFromParcel(Parcel in) {
+            return new NurseRoster(in);
         }
 
         @Override
-        public Roster[] newArray(int size) {
-            return new Roster[size];
+        public NurseRoster[] newArray(int size) {
+            return new NurseRoster[size];
         }
     };
     @Override
     public int describeContents() {
         return 0;
     }
-    protected Roster(Parcel in) {
-        built = in.readInt() == 1;
+    protected NurseRoster(Parcel in) {
+        if (in.readInt() == 0)
+            return;
+
         int size = in.readInt();
         for (int i = 0; i < size; i++)
             days.put(ShiftDay.values()[in.readInt()], ShiftType.values()[in.readInt()]);
     }
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(built ? 1 : 0);
-        if (!built)
+        dest.writeInt(isBuilt() ? 1 : 0);
+        if (!isBuilt())
             return;
 
         dest.writeInt(days.size());

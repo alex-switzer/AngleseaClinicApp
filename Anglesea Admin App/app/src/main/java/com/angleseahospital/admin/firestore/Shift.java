@@ -20,9 +20,10 @@ public class Shift {
     }
 
     public enum ShiftType {
+        NONE (null, null, false),
         AM (ShiftTime.AM_START, ShiftTime.AM_END, false),
         PM (ShiftTime.PM_START, ShiftTime.PM_END, false),
-        Night (ShiftTime.NIGHT_START, ShiftTime.NIGHT_END, true);
+        NIGHT(ShiftTime.NIGHT_START, ShiftTime.NIGHT_END, true);
 
         public ShiftTime startTime;
         public ShiftTime endTime;

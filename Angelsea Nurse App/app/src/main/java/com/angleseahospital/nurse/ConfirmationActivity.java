@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.angleseahospital.nurse.firestore.Nurse;
-import com.angleseahospital.nurse.firestore.Roster;
 
 import static com.angleseahospital.nurse.MainActivity.*;
 
