@@ -2,18 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="5dp">
-
+    android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
+        android:padding="15dp">
         <TextView
             android:id="@+id/txt_nurse_firstname"
             android:layout_width="120dp"
@@ -100,14 +95,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline">
+
             <include
                 layout="@layout/roster_view"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/guideline" />
         </FrameLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

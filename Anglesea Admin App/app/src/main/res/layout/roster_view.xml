@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:maxHeight="500dp"
+    android:maxHeight="650dp"
     android:minHeight="300dp"
+    android:maxWidth="600dp"
+    android:minWidth="400dp"
     android:padding="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -57,178 +59,332 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <TextView
-            android:id="@+id/roster_txt_shift_am"
-            android:layout_width="0dp"
+            android:id="@+id/txt_timetable_AM"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AM"
-            android:textAlignment="center"
-            android:textSize="25sp"
-            app:layout_constraintEnd_toStartOf="@+id/roster_txt_shift_pm"
-            app:layout_constraintStart_toStartOf="@+id/roster_vertical_divider"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/roster_txt_shift_pm"
-            android:layout_width="0dp"
+            android:id="@+id/txt_timetable_PM"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PM"
-            android:textAlignment="center"
-            android:textSize="25sp"
-            app:layout_constraintEnd_toStartOf="@+id/roster_txt_shift_night"
-            app:layout_constraintStart_toEndOf="@+id/roster_txt_shift_am"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
+            app:layout_constraintEnd_toStartOf="@+id/txt_timetable_Night"
+            app:layout_constraintStart_toEndOf="@+id/txt_timetable_AM"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/roster_txt_shift_night"
-            android:layout_width="0dp"
+            android:id="@+id/txt_timetable_Night"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NIGHT"
-            android:textAlignment="center"
-            android:textSize="25sp"
+            android:text="Night"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/roster_txt_shift_pm"
+            app:layout_constraintStart_toEndOf="@+id/txt_timetable_PM"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/txt_timetable_Mon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Mon"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/txt_timetable_Tue"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+        <TextView
+            android:id="@+id/txt_timetable_Tue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tue"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/txt_timetable_Wed"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_timetable_Mon" />
+
+        <TextView
+            android:id="@+id/txt_timetable_Wed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Wed"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/txt_timetable_Thu"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_timetable_Tue" />
+
+        <TextView
+            android:id="@+id/txt_timetable_Thu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Thu"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/txt_timetable_Fri"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_timetable_Wed" />
+
+        <TextView
+            android:id="@+id/txt_timetable_Fri"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Fri"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/txt_timetable_Sat"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_timetable_Thu" />
+
+        <TextView
+            android:id="@+id/txt_timetable_Sat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Sat"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/txt_timetable_Sun"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_timetable_Fri" />
+
+        <TextView
+            android:id="@+id/txt_timetable_Sun"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Sun"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_timetable_Sat" />
+
+        <RadioGroup
+            android:id="@+id/rgroup_Mon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_timetable_Mon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_timetable_Mon"
+            app:layout_constraintTop_toTopOf="@+id/txt_timetable_Mon">
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Mon_AM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Mon_PM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Mon_Night"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rgroup_Tue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_timetable_Tue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_timetable_Mon"
+            app:layout_constraintTop_toTopOf="@+id/txt_timetable_Tue">
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Tue_AM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Tue_PM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Tue_Night"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rgroup_Wed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_timetable_Wed"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_timetable_Mon"
+            app:layout_constraintTop_toTopOf="@+id/txt_timetable_Wed">
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Wed_AM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Wed_PM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Wed_Night"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rgroup_Thu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_timetable_Thu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_timetable_Mon"
+            app:layout_constraintTop_toTopOf="@+id/txt_timetable_Thu">
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Thu_AM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Thu_PM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Thu_Night"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rgroup_Fri"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_timetable_Fri"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_timetable_Mon"
+            app:layout_constraintTop_toTopOf="@+id/txt_timetable_Fri">
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Fri_AM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Fri_PM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Fri_Night"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rgroup_Sat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_timetable_Sat"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_timetable_Mon"
+            app:layout_constraintTop_toTopOf="@+id/txt_timetable_Sat">
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Sat_AM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Sat_PM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Sat_Night"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/rgroup_Sun"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/txt_timetable_Sun"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/txt_timetable_Mon"
+            app:layout_constraintTop_toTopOf="@+id/txt_timetable_Sun">
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Sun_AM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAlignment="center" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Sun_PM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.angleseahospital.admin.classes.UncheckableRadioButton
+                android:id="@+id/rbtn_Sun_Night"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </RadioGroup>
+
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/roster_vertical_divider"
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.2" />
-
-        <TextView
-            android:id="@+id/roster_txt_day_mon"
-            android:layout_width="78dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Mon"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toStartOf="@+id/roster_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roster_txt_shift_am" />
-
-        <TextView
-            android:id="@+id/roster_txt_day_tue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Tue"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/roster_txt_day_wed"
-            app:layout_constraintEnd_toStartOf="@+id/roster_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roster_txt_day_mon" />
-
-        <TextView
-            android:id="@+id/roster_txt_day_wed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Wed"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/roster_txt_day_thu"
-            app:layout_constraintEnd_toStartOf="@+id/roster_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roster_txt_day_tue" />
-
-        <TextView
-            android:id="@+id/roster_txt_day_thu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Thu"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/roster_txt_day_fri"
-            app:layout_constraintEnd_toStartOf="@+id/roster_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roster_txt_day_wed" />
-
-        <TextView
-            android:id="@+id/roster_txt_day_fri"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Fri"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/roster_txt_day_sat"
-            app:layout_constraintEnd_toStartOf="@+id/roster_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roster_txt_day_thu" />
-
-        <TextView
-            android:id="@+id/roster_txt_day_sat"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Sat"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/roster_txt_day_sun"
-            app:layout_constraintEnd_toStartOf="@+id/roster_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roster_txt_day_fri" />
-
-        <TextView
-            android:id="@+id/roster_txt_day_sun"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Sun"
-            android:textAlignment="center"
-            android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/roster_vertical_divider"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/roster_txt_day_sat" />
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/roster_txt_day_mon"
-            app:layout_constraintEnd_toEndOf="@+id/roster_txt_shift_night"
-            app:layout_constraintStart_toStartOf="@+id/roster_vertical_divider"
-            app:layout_constraintTop_toTopOf="@+id/roster_txt_day_mon">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.angleseahospital.admin.classes.UncheckableRadioButton
-                    android:id="@+id/uncheckableRadioButton2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:layout_constraintEnd_toStartOf="@+id/uncheckableRadioButton"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <com.angleseahospital.admin.classes.UncheckableRadioButton
-                    android:id="@+id/uncheckableRadioButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:layout_constraintEnd_toStartOf="@+id/uncheckableRadioButton3"
-                    app:layout_constraintStart_toEndOf="@+id/uncheckableRadioButton2" />
-
-                <com.angleseahospital.admin.classes.UncheckableRadioButton
-                    android:id="@+id/uncheckableRadioButton3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/uncheckableRadioButton" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </RadioGroup>
-
-        <RadioGroup
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/roster_txt_day_tue"
-            app:layout_constraintEnd_toEndOf="@+id/roster_txt_shift_night"
-            app:layout_constraintStart_toStartOf="@+id/roster_vertical_divider"
-            app:layout_constraintTop_toTopOf="@+id/roster_txt_day_tue"></RadioGroup>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
