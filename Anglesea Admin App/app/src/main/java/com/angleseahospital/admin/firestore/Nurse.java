@@ -32,6 +32,8 @@ public class Nurse implements Parcelable {
     public String lastSign;
     public NurseRoster roster = new NurseRoster();
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
     public Nurse() { /* Empty constructor for Firestore */ }
 
     public Nurse(QueryDocumentSnapshot baseNurse) {
@@ -61,7 +63,7 @@ public class Nurse implements Parcelable {
     }
 
     public String generateID() {
-        return id = FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document().getId();
+        return id = db.collection(Constants.COLLECTION_NURSES).document().getId();
     }
 
     public Task<Object> updateDatabase(boolean editing) {
@@ -73,9 +75,11 @@ public class Nurse implements Parcelable {
         data.put(FIELD_LASTSIGN, lastSign);
 
         if (editing) {
-            return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).update(data).continueWith(task -> roster.update(id));
+            return db.collection(Constants.COLLECTION_NURSES).document(id).update(data)
+                    .continueWith(task -> roster.update(id));
         } else {
-            return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).set(data).continueWith(task -> roster.update(id, NurseRoster.getThisWeeksRosterPath()));
+            return db.collection(Constants.COLLECTION_NURSES).document(id).set(data)
+                    .continueWith(task -> roster.update(id, NurseRoster.getThisWeeksRosterPath(id)));
         }
     }
 

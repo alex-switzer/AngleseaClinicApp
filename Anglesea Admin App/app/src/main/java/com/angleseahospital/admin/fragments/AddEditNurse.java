@@ -86,7 +86,6 @@ public class AddEditNurse extends Fragment {
         nurse.lastName = lastname;
         nurse.pin = pin;
 
-
         if (nurse.roster.build(v))
             nurse.updateDatabase(editing).continueWith(task -> {
                 if (task.isSuccessful())

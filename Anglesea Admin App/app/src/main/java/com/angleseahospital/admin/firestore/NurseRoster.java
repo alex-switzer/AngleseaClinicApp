@@ -25,6 +25,10 @@ import java.util.Map;
 
 public class NurseRoster implements Parcelable {
 
+    public static String getThisWeeksRosterPath(String nursesID) {
+        String output = Constants.COLLECTION_ROSTERS;
+        return output + "/" + getThisWeeksRosterDate() + "/nurses/" + nursesID;
+    }
     public static String getThisWeeksRosterPath() {
         String output = Constants.COLLECTION_ROSTERS;
         return output + "/" + getThisWeeksRosterDate();
@@ -205,7 +209,6 @@ public class NurseRoster implements Parcelable {
     }
     public Task<Void> update(String id, String reference) {
         this.reference = reference;
-        //TODO: Update roster on DB
 
         WriteBatch batch = db.batch();
         DocumentReference nurseDocRef = db.collection(Constants.COLLECTION_NURSES).document(id);
@@ -219,7 +222,7 @@ public class NurseRoster implements Parcelable {
             Log.d("Updating database with data: ", day.name() + ": \"" + days.get(day).name() + "\"");
         }
 
-        rosterDocRef.update(rosterData);
+        rosterDocRef.set(rosterData);
 
         return batch.commit().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
