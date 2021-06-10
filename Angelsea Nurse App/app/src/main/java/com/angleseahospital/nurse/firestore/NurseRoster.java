@@ -27,23 +27,20 @@ public class NurseRoster implements Parcelable {
     public void build(FirebaseFirestore db, OnCompleteListener listener) { build(db, listener, docRef); }
     public void build(FirebaseFirestore db, OnCompleteListener listener, String docRef) {
         this.docRef = docRef;
-        db.document(docRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (!task.isSuccessful())
-                    return;
-                DocumentSnapshot documentSnapshot = task.getResult();
-                if (documentSnapshot == null)
-                    return;
+        db.document(docRef).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful())
+                return;
+            DocumentSnapshot documentSnapshot = task.getResult();
+            if (documentSnapshot == null)
+                return;
 
-                String value;
-                days = new HashMap<>();
-                for (ShiftDay shift : ShiftDay.values()) {
-                    value = (String) documentSnapshot.get(shift.name().toLowerCase());
-                    if (value == null)
-                        continue;
-                    days.put(shift, ShiftType.fromString(value));
-                }
+            String value;
+            days = new HashMap<>();
+            for (ShiftDay shift : ShiftDay.values()) {
+                value = (String) documentSnapshot.get(shift.name().toLowerCase());
+                if (value == null)
+                    continue;
+                days.put(shift, ShiftType.fromString(value));
             }
         }).addOnCompleteListener(listener);
     }

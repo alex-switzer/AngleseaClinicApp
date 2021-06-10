@@ -2,6 +2,7 @@ package com.angleseahospital.admin.firestore;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -9,6 +10,7 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firestore.v1.StructuredQuery;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,11 +29,10 @@ public class Nurse implements Parcelable {
     public String lastName;
     public String pin;
     public boolean present;
-    public String rosterRef;
     public String lastSign;
-    public NurseRoster roster;
+    public NurseRoster roster = new NurseRoster();
 
-    public Nurse() { /* Empty constructor for Firestore */}
+    public Nurse() { /* Empty constructor for Firestore */ }
 
     public Nurse(QueryDocumentSnapshot baseNurse) {
         id = baseNurse.getId();
@@ -59,20 +60,29 @@ public class Nurse implements Parcelable {
         return firstName + " " + lastName;
     }
 
-    public Task<Void> updateCredentials() {
+    public String generateID() {
+        return id = FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document().getId();
+    }
+
+    public Task<Void> updateDatabase(boolean editing) {
         Map<String, Object> data = new HashMap<>();
         data.put(FIELD_FIRSTNAME, firstName);
         data.put(FIELD_LASTNAME, lastName);
         data.put(FIELD_PIN, pin);
         data.put(FIELD_PRESENT, present);
         data.put(FIELD_LASTSIGN, lastSign);
-        data.put(FIELD_ROSTER, roster.getReference());
 
-        return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).update(data);
+        if (editing) {
+            data.put(FIELD_ROSTER, roster.reference);
+            return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).update(data);
+        } else {
+            data.put(FIELD_ROSTER, NurseRoster.getTodaysRosterReference());
+            return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).set(data);
+        }
     }
 
     public Task<Object> updateRoster() {
-        return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).update(FIELD_ROSTER, roster.getReference()).continueWith(task -> {
+        return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).update(FIELD_ROSTER, roster.reference).continueWith(task -> {
             roster.update(id);
             return null;
         });

@@ -17,14 +17,7 @@ import com.angleseahospital.admin.firestore.Constants;
 import com.angleseahospital.admin.firestore.Nurse;
 import com.angleseahospital.admin.firestore.Shift;
 import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Source;
-
-import java.util.Iterator;
-import java.util.Set;
 
 public class AddEditNurse extends Fragment {
     private View v;
@@ -47,10 +40,16 @@ public class AddEditNurse extends Fragment {
     private String lastname;
     private String pin;
 
-    public AddEditNurse() { }
+    private boolean editing = false;
+
+    public AddEditNurse() {
+        nurse = new Nurse();
+        nurse.generateID();
+    }
 
     public AddEditNurse(Nurse nurse) {
         this.nurse = nurse;
+        editing = true;
     }
 
     @Nullable
@@ -74,7 +73,7 @@ public class AddEditNurse extends Fragment {
         pg_roster_sat = v.findViewById(R.id.rgroup_Sat);
         pg_roster_sun = v.findViewById(R.id.rgroup_Sun);
 
-        if (nurse == null)
+        if (nurse == null || !editing)
             return;
 
         etxt_firstname.setText(nurse.firstName);
@@ -206,7 +205,15 @@ public class AddEditNurse extends Fragment {
         if (nurse.roster.build(v))
             nurse.updateRoster();
 
-        nurse.updateCredentials();
+        nurse.updateDatabase(editing).continueWith(task -> {
+            if (task.isSuccessful())
+                Log.d("UpdateDatabaseContinuation", "Database Updated!");
+            else {
+                Log.d("UpdateDatabaseContinuation", "Database Failed to Update");
+                Log.e("UpdateDatabaseContinuation", task.getException().getMessage());
+            }
+            return null;
+        });
         //TODO: Update cache firestore with the new added or edited nurse
     }
 
