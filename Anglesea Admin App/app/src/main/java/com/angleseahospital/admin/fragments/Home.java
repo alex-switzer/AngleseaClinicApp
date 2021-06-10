@@ -30,11 +30,8 @@ public class Home extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        v.findViewById(R.id.btn_addNurse).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.changeCurrentFragment(getActivity(), getParentFragmentManager(), new AddEditNurse(), R.id.nav_addNurse);
-            }
+        v.findViewById(R.id.btn_addNurse).setOnClickListener(v -> {
+            MainActivity.changeCurrentFragment(getActivity(), getParentFragmentManager(), new AddEditNurse(), R.id.nav_addNurse);
         });
 
         RecyclerView rv_nurse = v.findViewById(R.id.rv_home_nurse);
@@ -44,11 +41,8 @@ public class Home extends Fragment {
         rv_nurse.setAdapter(nurseAdapter);
         rv_nurse.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        nurseAdapter.setOnItemClickListener(new NurseAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                MainActivity.changeCurrentFragment(getHost(), getParentFragmentManager(), new AddEditNurse(nurseAdapter.get(position)), R.id.nav_addNurse);
-            }
+        nurseAdapter.setOnItemClickListener(position -> {
+            MainActivity.changeCurrentFragment(getHost(), getParentFragmentManager(), new AddEditNurse(nurseAdapter.get(position)), R.id.nav_addNurse);
         });
     }
 }
