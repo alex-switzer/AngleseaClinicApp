@@ -67,7 +67,7 @@ public class NurseRoster implements Parcelable {
     }
     public boolean build(View v) {
         days = new HashMap<>();
-        RadioGroup dg_mon = v.findViewById(R.id.rgroup_Mon);
+        /*RadioGroup dg_mon = v.findViewById(R.id.rgroup_Mon);
         RadioGroup dg_tue = v.findViewById(R.id.rgroup_Tue);
         RadioGroup dg_wed = v.findViewById(R.id.rgroup_Wed);
         RadioGroup dg_thu = v.findViewById(R.id.rgroup_Thu);
@@ -154,7 +154,7 @@ public class NurseRoster implements Parcelable {
             case R.id.rbtn_Sun_Night:
                 days.put(ShiftDay.SUN, ShiftType.NIGHT);
                 break;
-        }
+        }*/
 
         return true;
     }

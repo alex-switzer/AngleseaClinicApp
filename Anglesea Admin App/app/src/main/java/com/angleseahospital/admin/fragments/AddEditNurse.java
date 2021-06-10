@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
 import com.angleseahospital.admin.R;
@@ -61,10 +62,12 @@ public class AddEditNurse extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         etxt_firstname = v.findViewById(R.id.etxt_firstname);
         etxt_lastname = v.findViewById(R.id.etxt_lastname);
         etxt_pin = v.findViewById(R.id.etxt_pin);
 
+        /*getChildFragmentManager().beginTransaction().replace(R.id.fragment_container_addeditnurse, new RosterView()).commit();
         pg_roster_mon = v.findViewById(R.id.rgroup_Mon);
         pg_roster_tue = v.findViewById(R.id.rgroup_Tue);
         pg_roster_wed = v.findViewById(R.id.rgroup_Wed);
@@ -83,11 +86,10 @@ public class AddEditNurse extends Fragment {
         if (!nurse.roster.isBuilt())
             nurse.roster.build(task -> setupRoster());
         else
-            setupRoster();
+            setupRoster();*/
     }
 
-    private void setupRoster() {
-        Log.d("ATTENNNNNNNTION!", " ROSTER IS BEING BUILT");
+    /*private void setupRoster() {
         if (nurse.roster.getTotalShifts() == 0)
             return;
 
@@ -188,7 +190,7 @@ public class AddEditNurse extends Fragment {
                 break;
         }
     }
-
+*/
     @Override
     public void onDetach() {
         super.onDetach();
