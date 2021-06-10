@@ -64,7 +64,7 @@ public class Nurse implements Parcelable {
         return id = FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document().getId();
     }
 
-    public Task<Void> updateDatabase(boolean editing) {
+    public Task<Object> updateDatabase(boolean editing) {
         Map<String, Object> data = new HashMap<>();
         data.put(FIELD_FIRSTNAME, firstName);
         data.put(FIELD_LASTNAME, lastName);
@@ -73,20 +73,12 @@ public class Nurse implements Parcelable {
         data.put(FIELD_LASTSIGN, lastSign);
 
         if (editing) {
-            data.put(FIELD_ROSTER, roster.reference);
-            return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).update(data);
+            return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).update(data).continueWith(task -> roster.update(id));
         } else {
-            data.put(FIELD_ROSTER, NurseRoster.getTodaysRosterReference());
-            return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).set(data);
+            return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).set(data).continueWith(task -> roster.update(id, NurseRoster.getThisWeeksRosterPath()));
         }
     }
 
-    public Task<Object> updateRoster() {
-        return FirebaseFirestore.getInstance().collection(Constants.COLLECTION_NURSES).document(id).update(FIELD_ROSTER, roster.reference).continueWith(task -> {
-            roster.update(id);
-            return null;
-        });
-    }
     //--Parcelable stuff--
     @Override
     public int describeContents() {

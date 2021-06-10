@@ -55,7 +55,6 @@ public class NurseAdapter extends RecyclerView.Adapter {
     }
 
     public NurseAdapter() {
-        Log.d("DEBUGGING NURSE ADAPTER", "NurseAdapter created");
         FirebaseFirestore.getInstance().collection("nurses").get().continueWith(new Continuation<QuerySnapshot, Object>() {
             @Override
             public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {

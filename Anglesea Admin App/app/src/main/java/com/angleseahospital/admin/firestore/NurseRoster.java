@@ -2,6 +2,7 @@ package com.angleseahospital.admin.firestore;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 
@@ -10,20 +11,66 @@ import androidx.annotation.NonNull;
 import com.angleseahospital.admin.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import com.angleseahospital.admin.firestore.Shift.*;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class NurseRoster implements Parcelable {
 
+    public static String getThisWeeksRosterPath() {
+        String output = Constants.COLLECTION_ROSTERS;
+        return output + "/" + getThisWeeksRosterDate();
+    }
+
+    public static String getThisWeeksRosterDate() {
+        return getWeeksDate(Calendar.getInstance());
+    }
+    public static String getWeeksDate(Calendar dayOfWeek) {
+
+        Calendar monday = getWeeksMonday(dayOfWeek);
+
+        int month = monday.get(Calendar.MONTH) + 1;
+        int day = monday.get(Calendar.DAY_OF_MONTH);
+
+        return monday.get(Calendar.YEAR) + "/" + (month < 10 ? "0" + month : month) + "/" + (day < 10 ? "0" + day : day);
+    }
+
+    public static Calendar getThisWeeksMonday() {
+        return getWeeksMonday(Calendar.getInstance());
+    }
+    public static Calendar getWeeksMonday(Calendar dayOfWeek) {
+        Calendar monday = Calendar.getInstance();
+        monday.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return monday;
+    }
+
+
+    public static Calendar getPrevWeeksMonday() { return getPrevWeeksMonday(getThisWeeksMonday()); }
+    public static Calendar getPrevWeeksMonday(Calendar currentMonday) {
+        currentMonday.add(Calendar.DATE, -7);  // for previous Monday
+        return currentMonday;
+    }
+
+    public static Calendar getNextWeeksMonday() { return getNextWeeksMonday(getThisWeeksMonday()); }
+    public static Calendar getNextWeeksMonday(Calendar currentMonday) {
+        currentMonday.add(Calendar.DATE, 7);  // for next Monday
+        return currentMonday;
+    }
+
+
     public String reference;
 
+    private Calendar monday;
     private HashMap<ShiftDay, ShiftType> days;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public NurseRoster() {  }
 
@@ -31,21 +78,14 @@ public class NurseRoster implements Parcelable {
         this.reference = reference;
     }
 
-    public static String getTodaysRosterReference() {
-        //TODO: Get this weeks roster
-        Calendar cal = Calendar.getInstance();
-        int month = cal.get(Calendar.MONTH) + 1;
-        return "roster/" + cal.get(Calendar.YEAR) + "/" + (month < 10 ? "0" + month : month) + "/" + cal.get(Calendar.MONDAY);
-    }
-
     public void build(OnCompleteListener listener) throws IllegalArgumentException {
         if (reference == null || reference.equals(""))
             throw new IllegalArgumentException("No doc reference provided");
         build(listener, reference);
     }
-    public void build(OnCompleteListener listener, String docRef) {
+    public void build(OnCompleteListener listener, @NonNull String docRef) {
         this.reference = docRef;
-        FirebaseFirestore.getInstance().document(docRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.document(docRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (!task.isSuccessful())
@@ -67,7 +107,8 @@ public class NurseRoster implements Parcelable {
     }
     public boolean build(View v) {
         days = new HashMap<>();
-        /*RadioGroup dg_mon = v.findViewById(R.id.rgroup_Mon);
+        //TODO: Link to RosterView
+        RadioGroup dg_mon = v.findViewById(R.id.rgroup_Mon);
         RadioGroup dg_tue = v.findViewById(R.id.rgroup_Tue);
         RadioGroup dg_wed = v.findViewById(R.id.rgroup_Wed);
         RadioGroup dg_thu = v.findViewById(R.id.rgroup_Thu);
@@ -154,14 +195,42 @@ public class NurseRoster implements Parcelable {
             case R.id.rbtn_Sun_Night:
                 days.put(ShiftDay.SUN, ShiftType.NIGHT);
                 break;
-        }*/
+        }
 
         return true;
     }
 
     public Task<Void> update(String id) {
+        return update(id, reference);
+    }
+    public Task<Void> update(String id, String reference) {
+        this.reference = reference;
         //TODO: Update roster on DB
-        return null;
+
+        WriteBatch batch = db.batch();
+        DocumentReference nurseDocRef = db.collection(Constants.COLLECTION_NURSES).document(id);
+        DocumentReference rosterDocRef = db.document(reference);
+
+        nurseDocRef.update(Nurse.FIELD_ROSTER, reference);
+
+        Map<String, Object> rosterData = new HashMap<>();
+        for (ShiftDay day : days.keySet()) {
+            rosterData.put(day.name().toLowerCase(), days.get(day).name());
+            Log.d("Updating database with data: ", day.name() + ": \"" + days.get(day).name() + "\"");
+        }
+
+        rosterDocRef.update(rosterData);
+
+        return batch.commit().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("NurseRoster.Update", " Failed to update: " + task.getException());
+                //TODO: Display failure to update roster
+            }
+        });
+    }
+
+    public Calendar getMonday() {
+        return monday;
     }
 
     public Shift getNextUncompletedShift() {
@@ -172,7 +241,6 @@ public class NurseRoster implements Parcelable {
                 return new Shift(shift, days.get(shift));
         return null;
     }
-
     public Shift getShift(ShiftDay day) {
         if (!isBuilt())
             return null;
@@ -181,7 +249,6 @@ public class NurseRoster implements Parcelable {
             return null;
         return new Shift(day, type);
     }
-
     public int getTotalShifts() {
         if (!isBuilt())
             return 0;
@@ -209,7 +276,6 @@ public class NurseRoster implements Parcelable {
         //TODO: Add early signout
         return false;
     }
-
     public Shift completeShift() {
         if (!isBuilt())
             return null;
@@ -222,7 +288,6 @@ public class NurseRoster implements Parcelable {
         unShift.type.complete();
         return unShift;
     }
-
 
     /*--Parcelable stuff--*/
     public static final Creator<NurseRoster> CREATOR = new Creator<NurseRoster>() {
