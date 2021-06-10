@@ -10,7 +10,6 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -23,7 +22,6 @@
             app:layout_constraintBottom_toTopOf="@+id/rv_Mon_AM"
             app:layout_constraintEnd_toEndOf="@+id/rv_Mon_AM"
             app:layout_constraintEnd_toStartOf="@+id/txt_timetable_PM"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,7 +34,6 @@
             app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="@+id/rv_Mon_AM_PM"
             app:layout_constraintEnd_toStartOf="@+id/txt_timetable_Night"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/txt_timetable_AM"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +45,6 @@
             android:textSize="20dp"
             app:layout_constraintBottom_toTopOf="@+id/rv_Mon_Night"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/txt_timetable_PM"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -231,7 +227,6 @@
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/rv_Tue_Night"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rv_Mon_AM_PM"
             app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
@@ -242,7 +237,6 @@
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/rv_Wed_Night"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rv_Tue_PM"
             app:layout_constraintTop_toBottomOf="@+id/rv_Mon_Night" />
 
@@ -253,7 +247,6 @@
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/rv_Thu_Night"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rv_Wed_PM"
             app:layout_constraintTop_toBottomOf="@+id/rv_Tue_Night" />
 
@@ -264,7 +257,6 @@
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/rv_Fri_Night"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rv_Thu_PM"
             app:layout_constraintTop_toBottomOf="@+id/rv_Wed_Night" />
 
@@ -275,7 +267,6 @@
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/rv_Sat_Night"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rv_Fri_PM"
             app:layout_constraintTop_toBottomOf="@+id/rv_Thu_Night" />
 
@@ -286,7 +277,6 @@
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/rv_Sun_Night"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rv_Sat_PM"
             app:layout_constraintTop_toBottomOf="@+id/rv_Fri_Night" />
 
@@ -298,7 +288,6 @@
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/rv_Sun_PM"
             app:layout_constraintTop_toBottomOf="@+id/rv_Sat_Night" />
 
@@ -379,7 +368,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.16" />
+            app:layout_constraintGuide_percent="0.2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
