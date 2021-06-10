@@ -15,20 +15,34 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.angleseahospital.admin.firestore.Shift.*;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 
 public class NurseRoster implements Parcelable {
 
-    private String reference;
+    public String reference;
 
     private HashMap<ShiftDay, ShiftType> days;
+
+    public NurseRoster() {  }
 
     public NurseRoster(String reference) {
         this.reference = reference;
     }
 
-    public void build(OnCompleteListener listener) { build(listener, reference); }
+    public static String getTodaysRosterReference() {
+        //TODO: Get this weeks roster
+        Calendar cal = Calendar.getInstance();
+        int month = cal.get(Calendar.MONTH) + 1;
+        return "roster/" + cal.get(Calendar.YEAR) + "/" + (month < 10 ? "0" + month : month) + "/" + cal.get(Calendar.MONDAY);
+    }
+
+    public void build(OnCompleteListener listener) throws IllegalArgumentException {
+        if (reference == null || reference.equals(""))
+            throw new IllegalArgumentException("No doc reference provided");
+        build(listener, reference);
+    }
     public void build(OnCompleteListener listener, String docRef) {
         this.reference = docRef;
         FirebaseFirestore.getInstance().document(docRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -172,10 +186,6 @@ public class NurseRoster implements Parcelable {
         if (!isBuilt())
             return 0;
         return days.size();
-    }
-
-    public String getReference() {
-        return reference;
     }
 
     public Iterator<ShiftDay> getIterator() {
