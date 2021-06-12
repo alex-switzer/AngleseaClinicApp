@@ -37,11 +37,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="10dp"
+        android:layout_marginVertical="15dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/button_SignedInFinish"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSignedInName"
         tools:visibility="visible" />
 
     <Button
