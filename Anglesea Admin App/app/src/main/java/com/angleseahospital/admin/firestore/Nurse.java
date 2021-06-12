@@ -102,7 +102,7 @@ public class Nurse implements Parcelable {
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(pin);
+        dest.writeInt(present ? 1 : 0);
         roster.writeToParcel(dest, flags);
     }
-
 }

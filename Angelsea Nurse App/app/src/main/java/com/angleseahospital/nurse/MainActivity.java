@@ -75,31 +75,24 @@ public class MainActivity extends AppCompatActivity {
         //TODO: Add loading circle while checking the logs collection
 
         //Check if todays collection exists. If not, creates it
-        check = db.collection("/logs/").document(Util.getToday()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot result = task.getResult();
-                    todayDirectoryExists = result.exists();
-                    Log.d(TAG, "EXISTS: " + todayDirectoryExists);
-                }
+        check = db.collection("/logs/").document(Util.getToday() + "/signings/nurses").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot result = task.getResult();
+                todayDirectoryExists = result.exists();
+                Log.d(TAG, "EXISTS: " + todayDirectoryExists);
             }
-        }).continueWith(new Continuation<DocumentSnapshot, DocumentSnapshot>() {
-            @Override
-            public DocumentSnapshot then(@NonNull Task<DocumentSnapshot> task) throws Exception {
-                if (!todayDirectoryExists) {
-                    Map<String, Object> data = new HashMap<>();
-                    db.collection("/logs/").document(Util.getToday() + "/signings/nurses").set(data).continueWith(new Continuation<Void, Object>() {
-                        @Override
-                        public Object then(@NonNull Task<Void> task) throws Exception {
-                            mPinLockView.setVisibility(View.VISIBLE);
-                            mIndicatorDots.setVisibility(View.VISIBLE);
-                            return null;
-                        }
-                    });
-                }
-                return null;
+        }).continueWith(task -> {
+            if (!todayDirectoryExists) {
+                db.collection("/logs/").document(Util.getToday() + "/signings/nurses").set(new HashMap<>()).continueWith(task1 -> {
+                    mPinLockView.setVisibility(View.VISIBLE);
+                    mIndicatorDots.setVisibility(View.VISIBLE);
+                    return null;
+                });
+            } else {
+                mPinLockView.setVisibility(View.VISIBLE);
+                mIndicatorDots.setVisibility(View.VISIBLE);
             }
+            return null;
         });
 
         mIndicatorDots.setBackgroundColor(getColor(R.color.greyish));
@@ -117,28 +110,25 @@ public class MainActivity extends AppCompatActivity {
                 //Queries Firestore Nurses table for all nurses
                 db.collection("nurses")
                         .whereEqualTo("pin", pin) //Get all nurses with the pin
-                        .get(Source.SERVER).continueWith(new Continuation<QuerySnapshot, Object>() {
-                    @Override
-                    public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
-                        mPinLockView.resetPinLockView();
-                        if (!task.isSuccessful()) {
-                            Log.e(TAG, "Task was not successful: " + task.getException());
-                            return null;
-                        }
+                        .get(Source.SERVER).continueWith(task -> {
+                            mPinLockView.resetPinLockView();
+                            if (!task.isSuccessful()) {
+                                Log.e(TAG, "Task was not successful: " + task.getException());
+                                return null;
+                            }
 
-                        QuerySnapshot result = task.getResult();
-                        if (result == null) {
-                            Log.e(TAG, "Empty response for nurses collection");
+                            QuerySnapshot result = task.getResult();
+                            if (result == null) {
+                                Log.e(TAG, "Empty response for nurses collection");
+                                return null;
+                            }
+                            //Loop through all nurses
+                            for (QueryDocumentSnapshot nurse : result) {
+                                signQueriedNurse(new Nurse(nurse));
+                                return null;
+                            }
                             return null;
-                        }
-                        //Loop through all nurses
-                        for (QueryDocumentSnapshot nurse : result) {
-                            signQueriedNurse(new Nurse(nurse));
-                            return null;
-                        }
-                        return null;
-                    }
-                });
+                        });
             }
 
             //Opens the ConfirmationActivity with the given nurse
@@ -146,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 if (nurse == null)
                     return;
 
-                if (nurse.lastSign.equals(Shift.get24Time())) {
+                if (nurse.lastSign != null && nurse.lastSign.equals(Shift.get24Time())) {
                     //TODO: Show error for signing again too soon
                     return;
                 }
@@ -161,14 +151,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onEmpty() {
-                Log.d(TAG, "Pin empty");
-            }
+            public void onEmpty() { }
 
             @Override
-            public void onPinChange(int pinLength, String intermediatePin) {
-                Log.d(TAG, "Pin changed, new length " + pinLength + " with intermediate pin " + intermediatePin);
-            }
+            public void onPinChange(int pinLength, String intermediatePin) { }
         });
     }
 
@@ -181,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal());
         startActivity(intent);
     }
-
 
     @Override
     protected void onResume() {

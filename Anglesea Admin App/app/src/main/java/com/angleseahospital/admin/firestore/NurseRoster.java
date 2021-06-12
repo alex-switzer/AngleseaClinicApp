@@ -89,23 +89,20 @@ public class NurseRoster implements Parcelable {
     }
     public void build(OnCompleteListener listener, @NonNull String docRef) {
         this.reference = docRef;
-        db.document(docRef).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (!task.isSuccessful())
-                    return;
-                DocumentSnapshot documentSnapshot = task.getResult();
-                if (documentSnapshot == null)
-                    return;
+        db.document(docRef).get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful())
+                return;
+            DocumentSnapshot documentSnapshot = task.getResult();
+            if (documentSnapshot == null)
+                return;
 
-                String value;
-                days = new HashMap<>();
-                for (ShiftDay shift : ShiftDay.values()) {
-                    value = (String) documentSnapshot.get(shift.name().toLowerCase());
-                    if (value == null)
-                        continue;
-                    days.put(shift, ShiftType.fromString(value));
-                }
+            String value;
+            days = new HashMap<>();
+            for (ShiftDay shift : ShiftDay.values()) {
+                value = (String) documentSnapshot.get(shift.name().toLowerCase());
+                if (value == null)
+                    continue;
+                days.put(shift, ShiftType.fromString(value));
             }
         }).addOnCompleteListener(listener);
     }
@@ -208,6 +205,8 @@ public class NurseRoster implements Parcelable {
         return update(id, reference);
     }
     public Task<Void> update(String id, String reference) {
+        if (!isBuilt())
+            throw new IllegalStateException("Roster has to be built first");
         this.reference = reference;
 
         WriteBatch batch = db.batch();
@@ -309,18 +308,20 @@ public class NurseRoster implements Parcelable {
         return 0;
     }
     protected NurseRoster(Parcel in) {
+        reference = in.readString();
+
         if (in.readInt() == 0)
             return;
 
         int size = in.readInt();
-        days = new HashMap<>();
         for (int i = 0; i < size; i++)
             days.put(ShiftDay.values()[in.readInt()], ShiftType.values()[in.readInt()]);
     }
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(isBuilt() ? 1 : 0);
+        dest.writeString(reference);
 
+        dest.writeInt(isBuilt() ? 1 : 0);
         if (!isBuilt())
             return;
 
