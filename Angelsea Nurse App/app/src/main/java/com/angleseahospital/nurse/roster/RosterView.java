@@ -57,7 +57,6 @@ public class RosterView extends ScrollView {
             displayRoster(roster);
     }
 
-
     public void displayRoster(NurseRoster roster) {
         if (!roster.isBuilt())
             throw new IllegalArgumentException("Roster is not built");

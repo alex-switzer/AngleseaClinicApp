@@ -56,7 +56,6 @@ public class NurseRoster implements Parcelable {
         return monday;
     }
 
-
     public static Calendar getPrevWeeksMonday() { return getPrevWeeksMonday(getThisWeeksMonday()); }
     public static Calendar getPrevWeeksMonday(Calendar currentMonday) {
         currentMonday.add(Calendar.DATE, -7);  // for previous Monday

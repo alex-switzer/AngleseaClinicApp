@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:maxHeight="800dp"
+    android:minHeight="100dp"
+    android:maxWidth="600dp"
+    android:minWidth="300dp" >
+
+    <TextView
+        android:id="@+id/txt_roster_day_am"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="AM"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/txt_roster_day_pm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_roster_day_am"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/txt_roster_day_am"
+        app:layout_constraintStart_toStartOf="@+id/txt_roster_day_am"
+        app:layout_constraintTop_toBottomOf="@+id/txt_roster_day_am" />
+
+
+    <TextView
+        android:id="@+id/txt_roster_day_pm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="PM"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/txt_roster_day_night"
+        app:layout_constraintStart_toEndOf="@+id/txt_roster_day_am"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_roster_day_pm"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/txt_roster_day_pm"
+        app:layout_constraintStart_toStartOf="@+id/txt_roster_day_pm"
+        app:layout_constraintTop_toBottomOf="@+id/txt_roster_day_am" />
+
+
+    <TextView
+        android:id="@+id/txt_roster_day_night"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Night"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_roster_day_pm"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_roster_day_night"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/txt_roster_day_night"
+        app:layout_constraintTop_toBottomOf="@+id/txt_roster_day_am" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
