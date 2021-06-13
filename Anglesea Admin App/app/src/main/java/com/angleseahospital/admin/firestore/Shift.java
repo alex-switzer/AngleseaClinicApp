@@ -37,12 +37,6 @@ public class Shift {
             this.overnight = overnight;
             this.isCompleted = false;
         }
-        ShiftType(ShiftTime start, ShiftTime endTime, boolean overnight, boolean isCompleted) {
-            this.startTime = start;
-            this.endTime = endTime;
-            this.overnight = overnight;
-            this.isCompleted = isCompleted;
-        }
 
         public static ShiftType fromString(String string) {
             if (string == null)
@@ -51,7 +45,7 @@ public class Shift {
             for (int i = 0; i < values().length; i++)
                 if (values()[i].name().equals(string))
                     return ShiftType.values()[i];
-            return null;
+            return ShiftType.NONE;
         }
 
         public boolean isCompleted() { return isCompleted; }

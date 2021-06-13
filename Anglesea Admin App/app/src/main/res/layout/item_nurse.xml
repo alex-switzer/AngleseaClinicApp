@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
+    android:layout_marginHorizontal="2dp"
     android:layout_marginTop="8dp"
     app:cardCornerRadius="5dp">
 
@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minWidth="250dp"
+        android:minHeight="50dp"
         android:background="@color/light_grey"
         android:paddingHorizontal="8dp"
         android:paddingVertical="2dp">
@@ -20,11 +21,11 @@
             android:id="@+id/nurseItem_txt_firstname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
+            android:ellipsize="marquee"
             android:maxLines="1"
             android:text="Super long nurses firstname"
             android:textSize="22dp"
-            app:layout_constraintEnd_toStartOf="@+id/nurseItem_img_edit"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firestore.v1.StructuredQuery;
@@ -32,18 +33,18 @@ public class Nurse implements Parcelable {
     public String lastSign;
     public NurseRoster roster = new NurseRoster();
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Nurse() { /* Empty constructor for Firestore */ }
 
-    public Nurse(QueryDocumentSnapshot baseNurse) {
-        id = baseNurse.getId();
-        firstName = (String) baseNurse.get(FIELD_FIRSTNAME);
-        lastName = (String) baseNurse.get(FIELD_LASTNAME);
-        pin = (String) baseNurse.get(FIELD_PIN);
-        present = (boolean) baseNurse.get(FIELD_PRESENT);
-        lastSign = (String) baseNurse.get(FIELD_LASTSIGN);
-        roster = new NurseRoster((String) baseNurse.get(FIELD_ROSTER));
+    public Nurse(DocumentSnapshot docNurse) {
+        id = docNurse.getId();
+        firstName = (String) docNurse.get(FIELD_FIRSTNAME);
+        lastName = (String) docNurse.get(FIELD_LASTNAME);
+        pin = (String) docNurse.get(FIELD_PIN);
+        present = (boolean) docNurse.get(FIELD_PRESENT);
+        lastSign = (String) docNurse.get(FIELD_LASTSIGN);
+        roster = new NurseRoster((String) docNurse.get(FIELD_ROSTER));
     }
 
     public static final Creator<Nurse> CREATOR = new Creator<Nurse>() {

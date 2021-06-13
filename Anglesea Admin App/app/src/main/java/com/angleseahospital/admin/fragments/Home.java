@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import com.angleseahospital.admin.MainActivity;
 import com.angleseahospital.admin.R;
 import com.angleseahospital.admin.firestore.NurseAdapter;
+import com.angleseahospital.admin.firestore.NurseRoster;
+
+import java.util.Calendar;
 
 public class Home extends Fragment {
 
@@ -36,15 +39,14 @@ public class Home extends Fragment {
         });
 
         RecyclerView rv_nurse = v.findViewById(R.id.rv_home_nurse);
-        NurseAdapter nurseAdapter = new NurseAdapter();
+        NurseAdapter nurseAdapter = new NurseAdapter(true);
         
         rv_nurse.setHasFixedSize(true);
         rv_nurse.setAdapter(nurseAdapter);
         rv_nurse.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        nurseAdapter.setOnItemClickListener(position -> {
-            MainActivity.changeCurrentFragment(getHost(), getParentFragmentManager(), new AddEditNurse(nurseAdapter.get(position)), R.id.nav_addNurse);
-        });
-
+        nurseAdapter.setOnItemClickListener(position ->
+                MainActivity.changeCurrentFragment(getHost(), getParentFragmentManager(), new AddEditNurse(nurseAdapter.get(position)), R.id.nav_addNurse)
+        );
     }
 }

@@ -13,11 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.angleseahospital.admin.R;
 import com.angleseahospital.admin.firestore.Constants;
-import com.angleseahospital.admin.firestore.Nurse;
 import com.angleseahospital.admin.firestore.NurseAdapter;
 import com.angleseahospital.admin.firestore.NurseRoster;
 import com.angleseahospital.admin.firestore.Shift;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -55,9 +53,9 @@ public class EntireRosterDayView extends LinearLayout {
         recyclers.put(Shift.ShiftType.PM, view.findViewById(R.id.rv_roster_day_pm));
         recyclers.put(Shift.ShiftType.NIGHT, view.findViewById(R.id.rv_roster_day_night));
 
-        adapters.put(Shift.ShiftType.AM, new NurseAdapter());
-        adapters.put(Shift.ShiftType.PM, new NurseAdapter());
-        adapters.put(Shift.ShiftType.NIGHT, new NurseAdapter());
+        adapters.put(Shift.ShiftType.AM, new NurseAdapter(false));
+        adapters.put(Shift.ShiftType.PM, new NurseAdapter(false));
+        adapters.put(Shift.ShiftType.NIGHT, new NurseAdapter(false));
 
         RecyclerView rv;
         for (Shift.ShiftType key : recyclers.keySet()) {
@@ -67,10 +65,15 @@ public class EntireRosterDayView extends LinearLayout {
         }
     }
 
+    public Map<Shift.ShiftType, NurseAdapter> getAdapters() {
+        return adapters;
+    }
+
     public void displayDay(Calendar day) {
         if (day == null)
             throw new IllegalArgumentException("Null day passed");
         this.day = day;
+        clear();
         FirebaseFirestore.getInstance()
                 .collection(Constants.COLLECTION_ROSTERS + "/" + NurseRoster.getThisWeeksRosterDate() + "/nurses")
                 .orderBy(toString(day), Query.Direction.ASCENDING)
@@ -82,19 +85,25 @@ public class EntireRosterDayView extends LinearLayout {
                     }
 
                     QuerySnapshot query = task.getResult();
+                    if (query == null)
+                        return;
+
                     Shift.ShiftType type;
                     for (QueryDocumentSnapshot doc : query) {
                         type = Shift.ShiftType.fromString((String) doc.get(toString(day)));
                         if (type != Shift.ShiftType.NONE)
-                            adapters.get(type).addNurse(new Nurse(doc));
+                            adapters.get(type).addNurse(doc.getId());
                     }
+
                 });
     }
 
     public void clear() {
-        RecyclerView rv;
-        for (Shift.ShiftType key : recyclers.keySet()) {
-            rv = recyclers.get(key);
+        NurseAdapter adapter;
+        for (Shift.ShiftType key : adapters.keySet()) {
+            adapter = adapters.get(key);
+            adapter.clear();
+            adapter.notifyDataSetChanged();
         }
     }
 

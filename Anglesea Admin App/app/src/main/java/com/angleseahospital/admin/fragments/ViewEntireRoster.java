@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.FrameLayout;
 
+import com.angleseahospital.admin.MainActivity;
 import com.angleseahospital.admin.R;
 import com.angleseahospital.admin.classes.EntireRosterDayView;
+import com.angleseahospital.admin.firestore.NurseAdapter;
 
 import java.util.Calendar;
 
@@ -48,7 +50,14 @@ public class ViewEntireRoster extends Fragment {
             closeCalendar();
         });
 
+        rosterDayView.getAdapters().forEach(
+            (shiftType, adapter) ->
+                adapter.setOnItemClickListener(position ->
+                    MainActivity.changeCurrentFragment(getHost(), getParentFragmentManager(), new AddEditNurse(adapter.get(position)), R.id.nav_addNurse)
+        ));
+
         rosterDayView.displayDay(Calendar.getInstance());
+        closeCalendar();
     }
 
     @Override
@@ -58,20 +67,19 @@ public class ViewEntireRoster extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_openCalendar:
-                if (calendarOpen)
-                    closeCalendar();
-                else
-                    openCalendar();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.menu_openCalendar) {
+            if (calendarOpen)
+                closeCalendar();
+            else
+                openCalendar();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void openRoster(int year, int month, int dayOfMonth) {
         Calendar day = Calendar.getInstance();
+        day.setFirstDayOfWeek(Calendar.MONDAY);
         day.set(year, month, dayOfMonth);
         rosterDayView.displayDay(day);
     }

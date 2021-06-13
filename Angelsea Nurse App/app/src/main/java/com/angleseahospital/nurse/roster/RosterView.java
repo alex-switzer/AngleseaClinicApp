@@ -32,15 +32,12 @@ public class RosterView extends ScrollView {
         this.context = context;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.roster_view, this);
-        Log.d("ROSTER VIEW CONSTRUCTOR TEST", "Inflated layout");
     }
 
     public void construct() {
         construct(null);
     }
     public void construct(NurseRoster roster) {
-        Log.d("ROSTER VIEW INIT", "Creating layout and groups...");
-
         groups.put(Shift.ShiftDay.MON, view.findViewById(R.id.roster_group_mon));
         groups.put(Shift.ShiftDay.TUE, view.findViewById(R.id.roster_group_tue));
         groups.put(Shift.ShiftDay.WED, view.findViewById(R.id.roster_group_wed));
@@ -49,9 +46,8 @@ public class RosterView extends ScrollView {
         groups.put(Shift.ShiftDay.SAT, view.findViewById(R.id.roster_group_sat));
         groups.put(Shift.ShiftDay.SUN, view.findViewById(R.id.roster_group_sun));
 
-        for (Shift.ShiftDay day: groups.keySet()) {
+        for (Shift.ShiftDay day: groups.keySet())
             groups.get(day).construct();
-        }
 
         if (roster != null)
             displayRoster(roster);

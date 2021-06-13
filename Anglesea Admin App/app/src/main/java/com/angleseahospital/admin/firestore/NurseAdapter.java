@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.angleseahospital.admin.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -18,8 +21,7 @@ import java.util.ArrayList;
 
 public class NurseAdapter extends RecyclerView.Adapter {
 
-    private ArrayList<Nurse> nurses;
-
+    private ArrayList<Nurse> nurses = new ArrayList<>();
     private OnItemClickListener clickListener;
 
     public interface OnItemClickListener {
@@ -54,7 +56,13 @@ public class NurseAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public NurseAdapter() {
+    public NurseAdapter(boolean fill) {
+        if (fill)
+            fill();
+    }
+
+    public void fill() {
+        clear();
         FirebaseFirestore.getInstance().collection("nurses").get().continueWith(task -> {
             if (!task.isSuccessful())
                 return null;
@@ -63,7 +71,6 @@ public class NurseAdapter extends RecyclerView.Adapter {
             if ((query = task.getResult()) == null)
                 return null;
 
-            nurses = new ArrayList<>();
             for (QueryDocumentSnapshot doc : query)
                 nurses.add(new Nurse(doc));
             notifyDataSetChanged();
@@ -73,6 +80,18 @@ public class NurseAdapter extends RecyclerView.Adapter {
 
     public NurseAdapter(ArrayList<Nurse> nurses) {
         this.nurses = nurses;
+    }
+
+    public void addNurse(String nurseID) {
+        FirebaseFirestore.getInstance()
+                .document(Constants.COLLECTION_NURSES + "/" + nurseID)
+                .get().addOnCompleteListener(task -> {
+                    if (!task.isSuccessful())
+                        return;
+
+                    nurses.add(new Nurse((DocumentSnapshot) task.getResult()));
+                    notifyItemInserted(nurses.size() - 1);
+                });
     }
 
     public void addNurse(Nurse nurse) {
@@ -86,10 +105,15 @@ public class NurseAdapter extends RecyclerView.Adapter {
         return nurses.get(position);
     }
 
+    public void clear() {
+        if (nurses != null)
+            nurses.clear();
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_nurse, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_nurse_item, parent, false);
         return new NurseViewHolder(v, clickListener);
     }
 

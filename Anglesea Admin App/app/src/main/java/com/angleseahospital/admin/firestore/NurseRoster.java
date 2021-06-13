@@ -52,6 +52,7 @@ public class NurseRoster implements Parcelable {
     }
     public static Calendar getWeeksMonday(Calendar dayOfWeek) {
         Calendar monday = Calendar.getInstance();
+        monday.setFirstDayOfWeek(Calendar.MONDAY);
         monday.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         return monday;
     }

@@ -7,9 +7,13 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.angleseahospital.admin.R;
 import com.angleseahospital.admin.classes.RosterView;
@@ -46,6 +50,7 @@ public class AddEditNurse extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return v = inflater.inflate(R.layout.frag_addeditnurse, container, false);
     }
 
@@ -72,11 +77,21 @@ public class AddEditNurse extends Fragment {
             rosterView.displayRoster();
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.add_edit_nurse_menu, menu);
+    }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.save_nurse_menu) {
+            save();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    public void save() {
         if (!verifyInputs()) {
             //TODO: Add visual indication that nurse changes didn't save
             return;
@@ -88,12 +103,15 @@ public class AddEditNurse extends Fragment {
 
         if (nurse.roster.build(v))
             nurse.updateDatabase(editing).continueWith(task -> {
-                if (task.isSuccessful())
-                    Log.d("UpdateDatabaseContinuation", "Database Updated!");
-                else {
+                if (!task.isSuccessful()) {
                     Log.d("UpdateDatabaseContinuation", "Database Failed to Update");
                     Log.e("UpdateDatabaseContinuation", task.getException().getMessage());
+                    Toast.makeText(getContext(), "Nurse Failed to save", Toast.LENGTH_LONG).show();
+                    //TODO: Display failure to save nurse more clearly
+                    return null;
                 }
+                Log.d("UpdateDatabaseContinuation", "Database Updated!");
+                Toast.makeText(getContext(), "Nurse Saved!", Toast.LENGTH_SHORT).show();
                 return null;
             });
     }
