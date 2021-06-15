@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.angleseahospital.admin.fragments.AddEditNurse;
-import com.angleseahospital.admin.fragments.EditAdmin;
 import com.angleseahospital.admin.fragments.Home;
 import com.angleseahospital.admin.fragments.ViewEntireRoster;
 import com.google.android.material.navigation.NavigationView;
@@ -60,9 +59,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_viewEntireRoster:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ViewEntireRoster()).commit();
-                break;
-            case R.id.nav_editAdmin:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new EditAdmin()).commit();
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
