@@ -72,6 +72,8 @@ public class EntireRosterDayView extends LinearLayout {
     public void displayDay(Calendar day) {
         if (day == null)
             throw new IllegalArgumentException("Null day passed");
+        if (day.equals(this.day))
+            return;
         this.day = day;
         clear();
         FirebaseFirestore.getInstance()

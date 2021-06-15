@@ -17,20 +17,29 @@
 
     <FrameLayout
         android:id="@+id/roster_calendar_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:alpha=".5"
+            />
+
         <CalendarView
             android:id="@+id/roster_calendar_select"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:firstDayOfWeek="2"
+            android:background="@color/white"
+            android:layout_gravity="right"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

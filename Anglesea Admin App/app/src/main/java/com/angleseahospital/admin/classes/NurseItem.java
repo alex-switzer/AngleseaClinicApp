@@ -44,10 +44,9 @@ public class NurseItem extends LinearLayout {
         super.onSizeChanged(w, h, oldw, oldh);
         Log.d("NURSE ITEM WIDTH", w + "");
         if (w < 250) {
-            firstname.setText(firstname.getText().toString() + " " + lastname.getText().toString());
             firstname.setTextSize(16);
+            lastname.setTextSize(14);
             img.setVisibility(GONE);
-            lastname.setVisibility(GONE);
         }
     }
 }
