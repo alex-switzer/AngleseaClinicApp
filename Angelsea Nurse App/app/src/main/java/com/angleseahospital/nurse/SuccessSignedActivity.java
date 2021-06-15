@@ -5,11 +5,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.airbnb.lottie.Cancellable;
+import com.airbnb.lottie.LottieAnimationView;
+import com.airbnb.lottie.LottieComposition;
+import com.airbnb.lottie.LottieCompositionFactory;
+import com.airbnb.lottie.LottieListener;
 import com.angleseahospital.nurse.firestore.Nurse;
 import com.angleseahospital.nurse.firestore.Shift;
 import com.angleseahospital.nurse.classes.Util;
@@ -18,9 +25,12 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.okhttp.internal.http.CacheStrategy;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import es.dmoral.toasty.Toasty;
 
 import static com.angleseahospital.nurse.MainActivity.*;
 
@@ -54,6 +64,17 @@ public class SuccessSignedActivity extends AppCompatActivity {
                     textView_Name.setText("Failed to sign in\n" + name);
                     Log.d(TAG, "Failed to sign in: " + task.getException());
                     //TODO: Add failure animation
+                    Toasty.error(SuccessSignedActivity.this, "Error signing in. Please try again!", Toast.LENGTH_LONG, true).show();
+
+                    LottieAnimationView animationSuccess = findViewById(R.id.animationSuccess);
+                    LottieCompositionFactory.fromRawRes(SuccessSignedActivity.this, R.raw.animationfailed).addListener(new LottieListener<LottieComposition>() {
+                        @Override
+                        public void onResult(LottieComposition result) {
+                            animationSuccess.setComposition(result);
+                            animationSuccess.playAnimation();
+                        }
+                    });
+
                     return null;
                 }
 
@@ -88,6 +109,17 @@ public class SuccessSignedActivity extends AppCompatActivity {
                         textView_Name.setText("Early sign out failed\n" + name);
                     Log.d(TAG, "Failed to sign out: " + task.getException());
                     //TODO: Add failure animation
+                    Toasty.error(SuccessSignedActivity.this, "Error signing out. Please try again!", Toast.LENGTH_LONG, true).show();
+
+                    LottieAnimationView animationSuccess = findViewById(R.id.animationSuccess);
+                    LottieCompositionFactory.fromRawRes(SuccessSignedActivity.this, R.raw.animationfailed).addListener(new LottieListener<LottieComposition>() {
+                        @Override
+                        public void onResult(LottieComposition result) {
+                            animationSuccess.setComposition(result);
+                            animationSuccess.playAnimation();
+                        }
+                    });
+
                     return null;
                 }
 

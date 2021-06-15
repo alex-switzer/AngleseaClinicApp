@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.andrognito.pinlockview.IndicatorDots;
 import com.andrognito.pinlockview.PinLockListener;
@@ -30,6 +32,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "PinLockView";
@@ -137,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
 
                 if (nurse.lastSign != null && nurse.lastSign.equals(Shift.get24Time())) {
-                    //TODO: Show error for signing again too soon
+                    Toasty.error(MainActivity.this, "This action can not done at this time. Please wait one minute.", Toast.LENGTH_LONG, true).show();
                     return;
                 }
 
