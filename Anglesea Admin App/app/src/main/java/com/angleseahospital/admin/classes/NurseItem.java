@@ -42,7 +42,6 @@ public class NurseItem extends LinearLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        Log.d("NURSE ITEM WIDTH", w + "");
         if (w < 250) {
             firstname.setTextSize(16);
             lastname.setTextSize(14);

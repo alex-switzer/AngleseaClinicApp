@@ -26,35 +26,32 @@ import java.util.Map;
 public class NurseRoster implements Parcelable {
 
     public static String getThisWeeksRosterPath(String nursesID) {
-        String output = Constants.COLLECTION_ROSTERS;
-        return output + "/" + getThisWeeksRosterDate() + "/nurses/" + nursesID;
+        return Constants.COLLECTION_ROSTERS + "/" + getThisWeeksRosterDate() + "/nurses/" + nursesID;
     }
     public static String getThisWeeksRosterPath() {
-        String output = Constants.COLLECTION_ROSTERS;
-        return output + "/" + getThisWeeksRosterDate();
+        return Constants.COLLECTION_ROSTERS + "/" + getThisWeeksRosterDate();
     }
 
     public static String getThisWeeksRosterDate() {
         return getWeeksDate(Calendar.getInstance());
     }
     public static String getWeeksDate(Calendar dayOfWeek) {
-
         Calendar monday = getWeeksMonday(dayOfWeek);
 
+        int year = monday.get(Calendar.YEAR);
         int month = monday.get(Calendar.MONTH) + 1;
-        int day = monday.get(Calendar.DAY_OF_MONTH);
+        int dayOfMonth = monday.get(Calendar.DATE);
 
-        return monday.get(Calendar.YEAR) + "/" + (month < 10 ? "0" + month : month) + "/" + (day < 10 ? "0" + day : day);
+        return year + "/" + (month < 10 ? "0" + month : month) + "/" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth);
     }
 
     public static Calendar getThisWeeksMonday() {
         return getWeeksMonday(Calendar.getInstance());
     }
     public static Calendar getWeeksMonday(Calendar dayOfWeek) {
-        Calendar monday = Calendar.getInstance();
-        monday.setFirstDayOfWeek(Calendar.MONDAY);
-        monday.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        return monday;
+        dayOfWeek.setFirstDayOfWeek(Calendar.MONDAY);
+        dayOfWeek.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        return dayOfWeek;
     }
 
     public static Calendar getPrevWeeksMonday() { return getPrevWeeksMonday(getThisWeeksMonday()); }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,15 +70,12 @@ public class EntireRosterDayView extends LinearLayout {
         return adapters;
     }
 
-    public void displayDay(Calendar day) {
-        if (day == null)
-            throw new IllegalArgumentException("Null day passed");
-        if (day.equals(this.day))
-            return;
+    public void displayDay(@NonNull Calendar day) {
         this.day = day;
+
         clear();
         FirebaseFirestore.getInstance()
-                .collection(Constants.COLLECTION_ROSTERS + "/" + NurseRoster.getThisWeeksRosterDate() + "/nurses")
+                .collection(Constants.COLLECTION_ROSTERS + "/" + NurseRoster.getWeeksDate(day) + "/nurses")
                 .orderBy(toString(day), Query.Direction.ASCENDING)
                 .get().addOnCompleteListener(task -> {
                     if (!task.isSuccessful()) {
@@ -87,16 +85,21 @@ public class EntireRosterDayView extends LinearLayout {
                     }
 
                     QuerySnapshot query = task.getResult();
-                    if (query == null)
+                    if (query == null) {
+                        Log.d("Roster Day View", "displayDay: Query was null");
                         return;
+                    }
 
                     Shift.ShiftType type;
                     for (QueryDocumentSnapshot doc : query) {
                         type = Shift.ShiftType.fromString((String) doc.get(toString(day)));
-                        if (type != Shift.ShiftType.NONE)
+                        if (type != Shift.ShiftType.NONE) {
                             adapters.get(type).addNurse(doc.getId());
+                            Log.d("ROSTER DAY VIEW", "displayDay: Nurse added");
+                        } else {
+                            Log.d("ROSTER DAY VIEW", "displayDay: Nurse had shift type of NONE");
+                        }
                     }
-
                 });
     }
 

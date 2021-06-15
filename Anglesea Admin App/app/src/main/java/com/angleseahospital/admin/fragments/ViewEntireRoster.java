@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,8 +47,18 @@ public class ViewEntireRoster extends Fragment {
         rosterDayView = v.findViewById(R.id.roster_day_view);
 
         calendar.setOnDateChangeListener((calendarView, year, month, dayOfMonth) -> {
-            openRoster(year, month, dayOfMonth);
+            Log.d("CALENDAR CHANGED", year + "/" + (month + 1 < 10 ? "0" + (month + 1) : month + 1) + "/" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
+
+            Calendar day = Calendar.getInstance();
+            day.setFirstDayOfWeek(Calendar.MONDAY);
+            day.set(Calendar.YEAR, year);
+            day.set(Calendar.MONTH, month);
+            day.set(Calendar.DATE, dayOfMonth);
+            Log.d("CALENDAR CHANGED", "Date:" + day.get(Calendar.DATE));
+
+            openRoster(day);
             closeCalendar();
+
         });
 
         rosterDayView.getAdapters().forEach(
@@ -77,10 +88,7 @@ public class ViewEntireRoster extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private void openRoster(int year, int month, int dayOfMonth) {
-        Calendar day = Calendar.getInstance();
-        day.setFirstDayOfWeek(Calendar.MONDAY);
-        day.set(year, month, dayOfMonth);
+    private void openRoster(Calendar day) {
         rosterDayView.displayDay(day);
     }
 

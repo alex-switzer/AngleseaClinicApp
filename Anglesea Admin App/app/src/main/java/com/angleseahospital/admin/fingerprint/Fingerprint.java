@@ -75,9 +75,10 @@ public class Fingerprint extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                loginWithFinger();
+                if (loginWithFinger())
+                    finish();
             } else {
-                //error logging in
+                //TODO: Show error logging in
             }
         }
     }
