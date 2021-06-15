@@ -42,7 +42,7 @@
         android:text="No, take me back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button_yesCorrect"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+        app:layout_constraintTop_toTopOf="@+id/guide_hor_divider" />
 
     <Button
         android:id="@+id/button_yesCorrect"
@@ -53,10 +53,10 @@
         android:text="Yes, Sign Me In"
         app:layout_constraintEnd_toStartOf="@+id/button_noIncorrect"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+        app:layout_constraintTop_toTopOf="@+id/guide_hor_divider" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/guide_hor_divider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

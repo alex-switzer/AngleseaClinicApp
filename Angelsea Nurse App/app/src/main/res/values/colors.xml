@@ -10,4 +10,6 @@
     <color name="grey">#808080</color>
     <color name="confirm_green">#76EE00</color>
     <color name="cancel_red">#F50400</color>
+    <color name="shift_active">#4fe1e3</color>
+    <color name="shift_inactive">#ebebeb</color>
 </resources>

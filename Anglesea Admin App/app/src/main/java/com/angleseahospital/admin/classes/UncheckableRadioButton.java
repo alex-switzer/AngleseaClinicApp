@@ -1,4 +1,4 @@
-package com.angleseahospital.admin;
+package com.angleseahospital.admin.classes;
 
 import android.content.Context;
 import android.util.AttributeSet;

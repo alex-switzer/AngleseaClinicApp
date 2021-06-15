@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:maxHeight="700dp"
+    android:minHeight="300dp"
+    android:maxWidth="600dp"
+    android:minWidth="450dp">
+
+    <TextView
+        android:id="@+id/txt_roster_Mon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Mon"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roster_group_mon"
+        app:layout_constraintEnd_toStartOf="@+id/guide_ver_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/roster_group_mon" />
+
+    <TextView
+        android:id="@+id/txt_roster_Tue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Tue"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roster_group_tue"
+        app:layout_constraintEnd_toStartOf="@+id/guide_ver_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/roster_group_tue" />
+
+    <TextView
+        android:id="@+id/txt_roster_Wed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Wed"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roster_group_wed"
+        app:layout_constraintEnd_toStartOf="@+id/guide_ver_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/roster_group_wed" />
+
+    <TextView
+        android:id="@+id/txt_roster_Thu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Thu"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roster_group_thu"
+        app:layout_constraintEnd_toStartOf="@+id/guide_ver_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/roster_group_thu" />
+
+    <TextView
+        android:id="@+id/txt_roster_Fri"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Fri"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roster_group_fri"
+        app:layout_constraintEnd_toStartOf="@+id/guide_ver_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/roster_group_fri" />
+
+    <TextView
+        android:id="@+id/txt_roster_Sat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Sat"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roster_group_sat"
+        app:layout_constraintEnd_toStartOf="@+id/guide_ver_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/roster_group_sat" />
+
+    <TextView
+        android:id="@+id/txt_roster_Sun"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Sun"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roster_group_sun"
+        app:layout_constraintEnd_toStartOf="@+id/guide_ver_divider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/roster_group_sun" />
+
+
+    <com.angleseahospital.nurse.roster.RosterShiftGroup
+        android:id="@+id/roster_group_mon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/roster_group_tue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_roster_Mon"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.angleseahospital.nurse.roster.RosterShiftGroup
+        android:id="@+id/roster_group_tue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/roster_group_wed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_roster_Tue"
+        app:layout_constraintTop_toBottomOf="@+id/roster_group_mon" />
+
+    <com.angleseahospital.nurse.roster.RosterShiftGroup
+        android:id="@+id/roster_group_wed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/roster_group_thu"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_roster_Wed"
+        app:layout_constraintTop_toBottomOf="@+id/roster_group_tue" />
+
+    <com.angleseahospital.nurse.roster.RosterShiftGroup
+        android:id="@+id/roster_group_thu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/roster_group_fri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_roster_Thu"
+        app:layout_constraintTop_toBottomOf="@+id/roster_group_wed" />
+
+    <com.angleseahospital.nurse.roster.RosterShiftGroup
+        android:id="@+id/roster_group_fri"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/roster_group_sat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_roster_Fri"
+        app:layout_constraintTop_toBottomOf="@+id/roster_group_thu" />
+
+    <com.angleseahospital.nurse.roster.RosterShiftGroup
+        android:id="@+id/roster_group_sat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/roster_group_sun"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_roster_Sat"
+        app:layout_constraintTop_toBottomOf="@+id/roster_group_fri" />
+
+    <com.angleseahospital.nurse.roster.RosterShiftGroup
+        android:id="@+id/roster_group_sun"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_roster_Sun"
+        app:layout_constraintTop_toBottomOf="@+id/roster_group_sat" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_ver_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+</androidx.constraintlayout.widget.ConstraintLayout>

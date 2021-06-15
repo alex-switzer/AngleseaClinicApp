@@ -1,24 +1,39 @@
 package com.angleseahospital.nurse;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Toast;
 
 import com.andrognito.pinlockview.IndicatorDots;
 import com.andrognito.pinlockview.PinLockListener;
 import com.andrognito.pinlockview.PinLockView;
 
-import com.angleseahospital.nurse.firebase.*;
+import com.angleseahospital.nurse.firestore.Nurse;
+import com.angleseahospital.nurse.firestore.Shift;
+import com.angleseahospital.nurse.classes.Util;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
-import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import es.dmoral.toasty.Toasty;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "PinLockView";
@@ -26,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String SIGNING_STATUS_EXTRA = "SigningStatus";
     public static final int RC_SIGN_IN = 1;
     public static final String NURSE_OBJECT = "NurseObject";
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public enum SigningStatus {
         SIGNING_IN,
@@ -35,13 +52,16 @@ public class MainActivity extends AppCompatActivity {
 
     private PinLockView mPinLockView;
     private IndicatorDots mIndicatorDots;
-    private NurseHelper nurseHelper;
+
+    private Task<DocumentSnapshot> check;
+    private boolean todayDirectoryExists = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Authenticate this apps instance to the Firebase project if they haven't been authenticated before
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             List<AuthUI.IdpConfig> providers = Arrays.asList(
                     new AuthUI.IdpConfig.EmailBuilder().build());
@@ -52,63 +72,104 @@ public class MainActivity extends AppCompatActivity {
                             .setAvailableProviders(providers)
                             .build(),
                     RC_SIGN_IN);
-        } else {
-            nurseHelper = new NurseHelper();
         }
-
 
         mPinLockView = findViewById(R.id.pin_lock_view);
         mIndicatorDots = findViewById(R.id.indicator_dots);
+        //TODO: Add loading circle while checking the logs collection
+
+        //Check if todays collection exists. If not, creates it
+        check = db.collection("/logs/").document(Util.getToday() + "/signings/nurses").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot result = task.getResult();
+                todayDirectoryExists = result.exists();
+                Log.d(TAG, "EXISTS: " + todayDirectoryExists);
+            }
+        }).continueWith(task -> {
+            if (!todayDirectoryExists) {
+                db.collection("/logs/").document(Util.getToday() + "/signings/nurses").set(new HashMap<>()).continueWith(task1 -> {
+                    mPinLockView.setVisibility(View.VISIBLE);
+                    mIndicatorDots.setVisibility(View.VISIBLE);
+                    return null;
+                });
+            } else {
+                mPinLockView.setVisibility(View.VISIBLE);
+                mIndicatorDots.setVisibility(View.VISIBLE);
+            }
+            return null;
+        });
+
         mIndicatorDots.setBackgroundColor(getColor(R.color.greyish));
         mPinLockView.attachIndicatorDots(mIndicatorDots);
-        mPinLockView.setPinLockListener(new PinLockListener() {
-            @Override
-            public void onComplete(String pin) {
-                Log.d(TAG, "pin entered: " + pin);
-
-                boolean is_found = false;
-                for (Nurse nurse : nurseHelper.getNurses().getValue()) {
-                    if (pin.equals(nurse.getPin())) {
-                        is_found = true;
-                        Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
-                        //TODO: Update presence for nurse with given pin
-                        String personName = nurse.getName_first();
-                        intent.putExtra(NAME_ID_EXTRA, personName);
-                        intent.putExtra(NURSE_OBJECT, (Parcelable) nurse);
-                        if (nurse.isPresent()) {
-                            if (nurse.getPin().equals("2580"))
-                                intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT_EARLY.ordinal());
-                            else
-                                intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
-                        } else {
-                            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal());
-                        }
-                        startActivity(intent);
-                    }
-                }
-                if (!is_found) {
-                    //TODO: Add failure to sign-in
-                    mPinLockView.resetPinLockView();
-                }
-            }
-
-            @Override
-            public void onEmpty() {
-                Log.d(TAG, "Pin empty");
-            }
-
-            @Override
-            public void onPinChange(int pinLength, String intermediatePin) {
-                Log.d(TAG, "Pin changed, new length " + pinLength + " with intermediate pin " + intermediatePin);
-            }
-        });
+        mPinLockView.setPinLength(4);
+        mPinLockView.setTextColor(getColor(R.color.black));
+        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);
         //mPinLockView.setCustomKeySet(new int[]{2, 3, 1, 5, 9, 6, 7, 0, 8, 4});
         //mPinLockView.enableLayoutShuffling();
 
-        mPinLockView.setPinLength(4);
-        mPinLockView.setTextColor(getColor(R.color.black));
+        mPinLockView.setPinLockListener(new PinLockListener() {
+            @Override
+            public void onComplete(final String pin) {
+                Log.d(TAG, "pin entered: " + pin);
+                //Queries Firestore Nurses table for all nurses
+                db.collection("nurses")
+                        .whereEqualTo("pin", pin) //Get all nurses with the pin
+                        .get(Source.SERVER).continueWith(task -> {
+                            mPinLockView.resetPinLockView();
+                            if (!task.isSuccessful()) {
+                                Log.e(TAG, "Task was not successful: " + task.getException());
+                                return null;
+                            }
 
-        mIndicatorDots.setIndicatorType(IndicatorDots.IndicatorType.FILL_WITH_ANIMATION);
+                            QuerySnapshot result = task.getResult();
+                            if (result == null) {
+                                Log.e(TAG, "Empty response for nurses collection");
+                                return null;
+                            }
+                            //Loop through all nurses
+                            for (QueryDocumentSnapshot nurse : result) {
+                                signQueriedNurse(new Nurse(nurse));
+                                return null;
+                            }
+                            return null;
+                        });
+            }
+
+            //Opens the ConfirmationActivity with the given nurse
+            public void signQueriedNurse(Nurse nurse) {
+                if (nurse == null)
+                    return;
+
+                if (nurse.lastSign != null && nurse.lastSign.equals(Shift.get24Time())) {
+                    Toasty.error(MainActivity.this, "This action can not done at this time. Please wait one minute.", Toast.LENGTH_LONG, true).show();
+                    return;
+                }
+
+                Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
+                intent.putExtra(NURSE_OBJECT, nurse);
+                if (nurse.present)
+                    intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
+                else
+                    intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onEmpty() { }
+
+            @Override
+            public void onPinChange(int pinLength, String intermediatePin) { }
+        });
+    }
+
+    public void signQueriedNurse(Nurse nurse) {
+        Intent intent = new Intent(MainActivity.this, ConfirmationActivity.class);
+        intent.putExtra(NURSE_OBJECT, nurse);
+        if (nurse.present)
+            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_OUT.ordinal());
+        else
+            intent.putExtra(SIGNING_STATUS_EXTRA, SigningStatus.SIGNING_IN.ordinal());
+        startActivity(intent);
     }
 
     @Override
@@ -116,21 +177,4 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         mPinLockView.resetPinLockView();
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
-
-            if (resultCode == RESULT_OK) {
-                //just logged in
-                nurseHelper = new NurseHelper();
-            } else {
-                //error logging in
-            }
-        }
-    }
-
 }
