@@ -111,6 +111,16 @@ public class RosterView {
         navRight.setEnabled(enabled);
     }
 
+    public void clearDisplay() {
+        pg_mon.clearCheck();
+        pg_tue.clearCheck();
+        pg_wed.clearCheck();
+        pg_thu.clearCheck();
+        pg_fri.clearCheck();
+        pg_sat.clearCheck();
+        pg_sun.clearCheck();
+    }
+
     /**
      * Displays the roster of the preset nurse
      */
@@ -127,6 +137,8 @@ public class RosterView {
      */
     public void displayRoster(NurseRoster roster) {
         txt_weekdate.setText(getWeeksDate(selectedMonday));
+
+        clearDisplay();
 
         if (roster.getTotalShifts() == 0)
             return;
