@@ -27,11 +27,13 @@ public class UncheckableRadioButton extends AppCompatRadioButton {
     @Override
     public void toggle() {
         //If button is already checked, uncheck it
-        if (isChecked())
-            if (getParent() != null && getParent() instanceof RadioGroup)
+        if (isChecked()) {
+            if (getParent() != null && getParent() instanceof RadioGroup) {
                 ((RadioGroup) getParent()).clearCheck();
-        else
+            }
+        } else {
             super.toggle();
+        }
     }
 
     @Override
