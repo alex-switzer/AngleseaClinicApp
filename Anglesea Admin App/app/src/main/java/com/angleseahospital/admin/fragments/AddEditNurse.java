@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,10 +16,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.angleseahospital.admin.MainActivity;
 import com.angleseahospital.admin.R;
 import com.angleseahospital.admin.classes.RosterView;
 import com.angleseahospital.admin.firestore.Constants;
 import com.angleseahospital.admin.firestore.Nurse;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AddEditNurse extends Fragment {
     private View v;
@@ -110,12 +113,35 @@ public class AddEditNurse extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //Activates option menus buttons functionality respectively
-        if (item.getItemId() == R.id.save_nurse_menu) {
-            save();
-            //Consumes item selected call
-            return true;
+        switch(item.getItemId()) {
+            case R.id.save_nurse_menu:
+                save();
+               //Consumes item selected call
+                return true;
+            case R.id.delete_nurse_menu:
+                delete();
+                //Consumes item selected call
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
+    }
+
+    public void delete() {
+        if (!editing)
+            goHome();
+
+        //Toasts must have a context in order to show. But deleting causes the context to be lost
+        FirebaseFirestore.getInstance()
+                .document(Constants.COLLECTION_NURSES + "/" + nurse.id)
+                .delete()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Toast.makeText(getContext(), "Nurse Failed to delete", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    goHome();
+                });
     }
 
     /**
@@ -145,8 +171,13 @@ public class AddEditNurse extends Fragment {
                 }
                 Log.d("UpdateDatabaseContinuation", "Database Updated!");
                 Toast.makeText(getContext(), "Nurse Saved!", Toast.LENGTH_SHORT).show();
+                goHome();
                 return null;
             });
+    }
+
+    private void goHome() {
+        MainActivity.changeCurrentFragment(getHost(), getParentFragmentManager(), new Home(), R.id.nav_home);
     }
 
     /**

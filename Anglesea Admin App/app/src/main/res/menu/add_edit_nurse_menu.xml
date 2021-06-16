@@ -5,4 +5,8 @@
         android:title="Save Nurse"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_save" />
+    <item android:id="@+id/delete_nurse_menu"
+        android:title="Delete Nurse"
+        app:showAsAction="collapseActionView"
+        android:icon="@drawable/ic_delete"/>
 </menu>
