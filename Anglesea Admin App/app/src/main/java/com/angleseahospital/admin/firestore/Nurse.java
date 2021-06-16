@@ -35,8 +35,15 @@ public class Nurse implements Parcelable {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    /**
+     * Empty Nurse constructor
+     */
     public Nurse() { /* Empty constructor for Firestore */ }
 
+    /**
+     * Constructs Nurse with details from docNurse
+     * @param docNurse Document to read details for Nurse from
+     */
     public Nurse(DocumentSnapshot docNurse) {
         id = docNurse.getId();
         firstName = (String) docNurse.get(FIELD_FIRSTNAME);
@@ -47,26 +54,27 @@ public class Nurse implements Parcelable {
         roster = new NurseRoster((String) docNurse.get(FIELD_ROSTER));
     }
 
-    public static final Creator<Nurse> CREATOR = new Creator<Nurse>() {
-        @Override
-        public Nurse createFromParcel(Parcel in) {
-            return new Nurse(in);
-        }
-
-        @Override
-        public Nurse[] newArray(int size) {
-            return new Nurse[size];
-        }
-    };
-
+    /**
+     * Gets the fullname of the nurse
+     * @return fullname of the nurse
+     */
     public String getFullName() {
         return firstName + " " + lastName;
     }
 
+    /**
+     * Generates a ID for this nurse
+     * @return Generated ID
+     */
     public String generateID() {
         return id = db.collection(Constants.COLLECTION_NURSES).document().getId();
     }
 
+    /**
+     * Updates the database with nurses details and roster
+     * @param editing If details should be updated or overriden in the database
+     * @return Task of the database updates
+     */
     public Task<Object> updateDatabase(boolean editing) {
         Map<String, Object> data = new HashMap<>();
         data.put(FIELD_FIRSTNAME, firstName);
@@ -85,10 +93,34 @@ public class Nurse implements Parcelable {
     }
 
     //--Parcelable stuff--
+    /**
+     * Parcel CREATOR creates a Nurse object from another parcel
+     */
+    public static final Creator<Nurse> CREATOR = new Creator<Nurse>() {
+        @Override
+        public Nurse createFromParcel(Parcel in) {
+            return new Nurse(in);
+        }
+
+        @Override
+        public Nurse[] newArray(int size) {
+            return new Nurse[size];
+        }
+    };
+
+    /**
+     * Describes content
+     * @return 0
+     */
     @Override
     public int describeContents() {
         return 0;
     }
+
+    /**
+     * Constructs this nurse with given Parcel object
+     * @param in Parcel to construct nurse with
+     */
     protected Nurse(Parcel in) {
         id = in.readString();
         firstName = in.readString();
@@ -97,6 +129,12 @@ public class Nurse implements Parcelable {
         present = in.readByte() != 0;
         roster = new NurseRoster(in);
     }
+
+    /**
+     * Writes to Parcel object with details of this Nurse object
+     * @param dest Parcel to parse details to
+     * @param flags Flags for Parcel
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);

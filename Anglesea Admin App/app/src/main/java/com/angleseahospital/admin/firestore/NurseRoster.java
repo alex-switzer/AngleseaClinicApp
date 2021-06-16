@@ -25,16 +25,36 @@ import java.util.Map;
 
 public class NurseRoster implements Parcelable {
 
+    /**
+     * Creates a path string to this weeks roster for nurse with given ID
+     * @param nursesID ID of nurse to path to
+     * @return Path string to this weeks roster for nurse
+     */
     public static String getThisWeeksRosterPath(String nursesID) {
         return Constants.COLLECTION_ROSTERS + "/" + getThisWeeksRosterDate() + "/nurses/" + nursesID;
     }
+
+    /**
+     * Creates a path string to this weeks roster
+     * @return Path string to this weeks roster
+     */
     public static String getThisWeeksRosterPath() {
         return Constants.COLLECTION_ROSTERS + "/" + getThisWeeksRosterDate();
     }
 
+    /**
+     * Returns the current weeks roster string date. i.e yyyy/mm/dd
+     * @return
+     */
     public static String getThisWeeksRosterDate() {
         return getWeeksDate(Calendar.getInstance());
     }
+
+    /**
+     * Returns the roster date string for a given day of a week. i.e yyyy/mm/dd
+     * @param dayOfWeek Calendar instance for a day of the week to get roster string for
+     * @return Roster date string
+     */
     public static String getWeeksDate(Calendar dayOfWeek) {
         Calendar monday = getWeeksMonday(dayOfWeek);
 
@@ -45,22 +65,52 @@ public class NurseRoster implements Parcelable {
         return year + "/" + (month < 10 ? "0" + month : month) + "/" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth);
     }
 
+    /**
+     * Retuns a Calendar instance for this weeks Monday
+     * @return Calendar instance for this weeks Monday
+     */
     public static Calendar getThisWeeksMonday() {
         return getWeeksMonday(Calendar.getInstance());
     }
+
+    /**
+     * Returns a Calendar instance for a given day of the weeks Monday
+     * @param dayOfWeek Day of the week to create Mondays Calendar instance from
+     * @return Calendar instance for a given day of the weeks Monday
+     */
     public static Calendar getWeeksMonday(Calendar dayOfWeek) {
         dayOfWeek.setFirstDayOfWeek(Calendar.MONDAY);
         dayOfWeek.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
         return dayOfWeek;
     }
 
+    /**
+     * Returns a Calendar instance for last weeks Monday
+     * @return Calendar instance for last weeks Monday
+     */
     public static Calendar getPrevWeeksMonday() { return getPrevWeeksMonday(getThisWeeksMonday()); }
+
+    /**
+     * Returns a Calendar instance for the Monday prior to the given Monday
+     * @param currentMonday Monday to get the prior weeks Monday from
+     * @return Calendar instance for the prior weeks Monday
+     */
     public static Calendar getPrevWeeksMonday(Calendar currentMonday) {
         currentMonday.add(Calendar.DATE, -7);  // for previous Monday
         return currentMonday;
     }
 
+    /**
+     * Returns a Calendar instance for next weeks Monday
+     * @return Calendar instance for next weeks Monday
+     */
     public static Calendar getNextWeeksMonday() { return getNextWeeksMonday(getThisWeeksMonday()); }
+
+    /**
+     * Returns a Calendar instance for the following weeks Monday to a given weeks Monday
+     * @param currentMonday The Monday to retrieve the next Monday from
+     * @return Calendar instance of the Monday following the given Monday
+     */
     public static Calendar getNextWeeksMonday(Calendar currentMonday) {
         currentMonday.add(Calendar.DATE, 7);  // for next Monday
         return currentMonday;
@@ -69,21 +119,41 @@ public class NurseRoster implements Parcelable {
 
     public String reference;
 
-    private Calendar monday;
     private HashMap<ShiftDay, ShiftType> days;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    /**
+     * Empty constructor for the NurseRoster
+     */
     public NurseRoster() {  }
 
-    public NurseRoster(String reference) {
+    /**
+     * Constructs a NurseRoster with a reference set
+     * @param reference Reference to set
+     * @throws IllegalArgumentException if {@code reference} is empty
+     */
+    public NurseRoster(@NonNull String reference) {
+        if (reference.length() == 0)
+            throw new IllegalArgumentException("Reference cannot be empty");
         this.reference = reference;
     }
 
-    public void build(OnCompleteListener listener) throws IllegalArgumentException {
+    /**
+     * Builds the roster with the preset reference
+     * @param listener Listener to be called once built
+     * @throws IllegalArgumentException if preset reference was not set
+     */
+    public void build(OnCompleteListener listener) {
         if (reference == null || reference.equals(""))
             throw new IllegalArgumentException("No doc reference provided");
         build(listener, reference);
     }
+
+    /**
+     * Builds the roster with given reference
+     * @param listener Listener to be called once construction is complete
+     * @param docRef Roster document reference to be built from
+     */
     public void build(OnCompleteListener listener, @NonNull String docRef) {
         this.reference = docRef;
         db.document(docRef).get().addOnCompleteListener(task -> {
@@ -103,6 +173,12 @@ public class NurseRoster implements Parcelable {
             }
         }).addOnCompleteListener(listener);
     }
+
+    /**
+     * Builds the roster with given view
+     * @param v View to build roster from
+     * @return Whether the build was successful
+     */
     public boolean build(View v) {
         days = new HashMap<>();
         //TODO: Link to RosterView
@@ -198,16 +274,33 @@ public class NurseRoster implements Parcelable {
         return true;
     }
 
-    public Task<Void> update(String id) {
-        return update(id, reference);
+    /**
+     * Updates the database with built roster. Also updates the nurses roster reference
+     * @param nurseID ID of nurse to update
+     * @return Task of the database update operation
+     */
+    public Task<Void> update(String nurseID) {
+        return update(nurseID, reference);
     }
-    public Task<Void> update(String id, String reference) {
+
+    /**
+     * Updates the database with built roster
+     * @param nurseID ID of the nurse to update roster for
+     * @param reference Reference to the roster document to update
+     * @return Task of the database update operation
+     * @throws IllegalStateException if roster has not been built before
+     * @throws IllegalArgumentException if {@code reference} is empty
+     */
+    public Task<Void> update(String nurseID, @NonNull String reference) {
+        if (reference.length() == 0)
+            throw new IllegalArgumentException("Given reference cannot be empty");
         if (!isBuilt())
             throw new IllegalStateException("Roster has to be built first");
         this.reference = reference;
 
         WriteBatch batch = db.batch();
-        DocumentReference nurseDocRef = db.collection(Constants.COLLECTION_NURSES).document(id);
+        //TODO: Don't necessarily change the roster reference for the nurse
+        DocumentReference nurseDocRef = db.collection(Constants.COLLECTION_NURSES).document(nurseID);
         DocumentReference rosterDocRef = db.document(reference);
 
         nurseDocRef.update(Nurse.FIELD_ROSTER, reference);
@@ -228,18 +321,25 @@ public class NurseRoster implements Parcelable {
         });
     }
 
-    public Calendar getMonday() {
-        return monday;
-    }
-
+    /**
+     * Gets the next uncompleted shift in the roster
+     * @return Last uncompleted Shift object
+     * @throws IllegalStateException if roster has not been build
+     */
     public Shift getNextUncompletedShift() {
         if (!isBuilt())
-            return null;
+            throw new IllegalStateException("Roster must be built first");
         for (ShiftDay shift : ShiftDay.values())
             if (!days.get(shift).isCompleted())
                 return new Shift(shift, days.get(shift));
         return null;
     }
+
+    /**
+     * Gets the shift of given day
+     * @param day The day to get the shift for
+     * @return Shift for the given day
+     */
     public Shift getShift(ShiftDay day) {
         if (!isBuilt())
             return null;
@@ -248,25 +348,46 @@ public class NurseRoster implements Parcelable {
             return null;
         return new Shift(day, type);
     }
+
+    /**
+     * Gets the total amount of shifts
+     * @return The total amount of shifts. -1 if roster has not been built
+     */
     public int getTotalShifts() {
         if (!isBuilt())
-            return 0;
+            return -1;
         return days.size();
     }
 
+    /**
+     * Returns an Iterator for all shifts
+     * @return The Iterator for every shift
+     * @throws IllegalStateException if roster has not been built
+     */
     public Iterator<ShiftDay> getIterator() {
         if (!isBuilt())
-            return null;
+            throw new IllegalStateException("Roster must be built first");
         return days.keySet().iterator();
     }
 
+    /**
+     * Gets all shifts in a HashMap
+     * @return HashMap of all shifts
+     */
     public HashMap<ShiftDay, ShiftType> getShifts() {
         return days;
     }
 
+    /**
+     * Returns true if the roster is built. False otherwise
+     * @return if roster has been built
+     */
     public boolean isBuilt() { return days != null; }
 
-    public boolean earlySignout() {
+
+    /*
+    //To be implemented later
+    private boolean earlySignout() {
         if (!isBuilt())
             return false;
         Shift unShift = getNextUncompletedShift();
@@ -275,7 +396,7 @@ public class NurseRoster implements Parcelable {
         //TODO: Add early signout
         return false;
     }
-    public Shift completeShift() {
+    private Shift completeShift() {
         if (!isBuilt())
             return null;
 
@@ -286,9 +407,13 @@ public class NurseRoster implements Parcelable {
         days.get(unShift.day).complete();
         unShift.type.complete();
         return unShift;
-    }
+    }*/
+
 
     /*--Parcelable stuff--*/
+    /**
+     * Gets the CREATOR object for this NurseRoster
+     */
     public static final Creator<NurseRoster> CREATOR = new Creator<NurseRoster>() {
         @Override
         public NurseRoster createFromParcel(Parcel in) {
@@ -300,10 +425,20 @@ public class NurseRoster implements Parcelable {
             return new NurseRoster[size];
         }
     };
+
+    /**
+     * Describes the contents for Parcels
+     * @return Described contents
+     */
     @Override
     public int describeContents() {
         return 0;
     }
+
+    /**
+     * Constructs NurseRoster from Parcel object
+     * @param in Parcel to be read from
+     */
     protected NurseRoster(Parcel in) {
         reference = in.readString();
 
@@ -314,6 +449,12 @@ public class NurseRoster implements Parcelable {
         for (int i = 0; i < size; i++)
             days.put(ShiftDay.values()[in.readInt()], ShiftType.values()[in.readInt()]);
     }
+
+    /**
+     * Writes contents of this NurseRoster to given Parcel
+     * @param dest Parcel to be written to
+     * @param flags Flags for Parcel
+     */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(reference);
