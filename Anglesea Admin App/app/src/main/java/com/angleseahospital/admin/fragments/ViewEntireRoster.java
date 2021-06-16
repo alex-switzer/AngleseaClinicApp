@@ -29,6 +29,7 @@ public class ViewEntireRoster extends Fragment {
     private CalendarView calendar;
     private EntireRosterDayView rosterDayView;
 
+    private long currentDate;
     private boolean calendarOpen = false;
 
     /**
@@ -56,22 +57,24 @@ public class ViewEntireRoster extends Fragment {
         //Once the activity is created. Assign View members with their respective views
         calendarContainer = v.findViewById(R.id.roster_calendar_container);
         calendar = v.findViewById(R.id.roster_calendar_select);
+        currentDate = calendar.getDate();
+
         rosterDayView = v.findViewById(R.id.roster_day_view);
 
         //Setup listener for the CalendarView which displays the roster for chosen day
         calendar.setOnDateChangeListener((calendarView, year, month, dayOfMonth) -> {
-            Log.d("CALENDAR CHANGED", year + "/" + (month + 1 < 10 ? "0" + (month + 1) : month + 1) + "/" + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth));
-
             Calendar day = Calendar.getInstance();
             day.setFirstDayOfWeek(Calendar.MONDAY);
             day.set(Calendar.YEAR, year);
             day.set(Calendar.MONTH, month);
             day.set(Calendar.DATE, dayOfMonth);
-            Log.d("CALENDAR CHANGED", "Date:" + day.get(Calendar.DATE));
 
-            openRoster(day);
+            if (!rosterDayView.displayDay(day)) {
+                calendar.setDate(currentDate);
+                return;
+            }
             closeCalendar();
-
+            currentDate = calendarView.getDate();
         });
 
         //Attach OnItemClickListeners to all RosterView adapters
@@ -106,14 +109,6 @@ public class ViewEntireRoster extends Fragment {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Displays the roster for the given day
-     * @param day Day to display the roster for
-     */
-    private void openRoster(Calendar day) {
-        rosterDayView.displayDay(day);
     }
 
     /**

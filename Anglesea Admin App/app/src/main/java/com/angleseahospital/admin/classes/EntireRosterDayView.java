@@ -33,6 +33,8 @@ public class EntireRosterDayView extends LinearLayout {
     private Context context;
     private View view;
 
+    private volatile boolean inProgress = false;
+
     Map<Shift.ShiftType, RecyclerView> recyclers = new HashMap<>();
     Map<Shift.ShiftType, NurseAdapter> adapters = new HashMap<>();
 
@@ -86,9 +88,13 @@ public class EntireRosterDayView extends LinearLayout {
 
     /**
      * Displays the roster of all nurses in a given day
-     * @param day
+     * @param day Day of a week to display
      */
-    public void displayDay(@NonNull Calendar day) {
+    public boolean displayDay(@NonNull Calendar day) {
+        if (inProgress)
+            return false;
+
+        inProgress = true;
         this.day = day;
 
         //Clears the recyclers before adding nurses
@@ -124,7 +130,10 @@ public class EntireRosterDayView extends LinearLayout {
                             Log.d("ROSTER DAY VIEW", "displayDay: Nurse had shift type of NONE");
                         }
                     }
+                    inProgress = false;
                 });
+
+        return true;
     }
 
     /**

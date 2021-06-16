@@ -119,6 +119,7 @@ public class NurseAdapter extends RecyclerView.Adapter {
                     DocumentSnapshot nurseDoc = task.getResult();
                     if (nurseDoc == null)
                         return;
+
                     addNurse(new Nurse(nurseDoc));
                 });
     }
