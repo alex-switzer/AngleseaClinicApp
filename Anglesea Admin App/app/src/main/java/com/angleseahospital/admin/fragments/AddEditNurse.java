@@ -96,7 +96,7 @@ public class AddEditNurse extends Fragment {
 
         //Build nurses roster if it isn't already. Then display roster
         if (!nurse.roster.isBuilt())
-            nurse.roster.build(task -> rosterView.displayRoster());
+            nurse.roster.build().addOnCompleteListener(task -> rosterView.displayRoster());
         else
             rosterView.displayRoster();
     }

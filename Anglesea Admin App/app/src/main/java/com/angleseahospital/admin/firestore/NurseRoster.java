@@ -117,10 +117,11 @@ public class NurseRoster implements Parcelable {
     }
 
 
+
     public String reference;
 
     private HashMap<ShiftDay, ShiftType> days;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
      * Empty constructor for the NurseRoster
@@ -140,23 +141,22 @@ public class NurseRoster implements Parcelable {
 
     /**
      * Builds the roster with the preset reference
-     * @param listener Listener to be called once built
      * @throws IllegalArgumentException if preset reference was not set
      */
-    public void build(OnCompleteListener listener) {
+    public Task<DocumentSnapshot>  build() {
         if (reference == null || reference.equals(""))
             throw new IllegalArgumentException("No doc reference provided");
-        build(listener, reference);
+        return build(reference);
     }
 
     /**
      * Builds the roster with given reference
-     * @param listener Listener to be called once construction is complete
      * @param docRef Roster document reference to be built from
+     * @return
      */
-    public void build(OnCompleteListener listener, @NonNull String docRef) {
+    public Task<DocumentSnapshot> build(@NonNull String docRef) {
         this.reference = docRef;
-        db.document(docRef).get().addOnCompleteListener(task -> {
+        return db.document(docRef).get().addOnCompleteListener(task -> {
             if (!task.isSuccessful())
                 return;
             DocumentSnapshot documentSnapshot = task.getResult();
@@ -171,7 +171,7 @@ public class NurseRoster implements Parcelable {
                     continue;
                 days.put(shift, ShiftType.fromString(value));
             }
-        }).addOnCompleteListener(listener);
+        });
     }
 
     /**
@@ -275,8 +275,7 @@ public class NurseRoster implements Parcelable {
     }
 
     /**
-     * Updates the database with built roster. Also updates the nurses roster reference
-     * @param nurseID ID of nurse to update
+     * Updates the roster database. If nurseID is null, then the roster reference is not updated, otherwise it is
      * @return Task of the database update operation
      */
     public Task<Void> update(String nurseID) {
@@ -284,14 +283,17 @@ public class NurseRoster implements Parcelable {
     }
 
     /**
-     * Updates the database with built roster
+     * Updates the database with built roster, Also updates the nurses roster reference
      * @param nurseID ID of the nurse to update roster for
      * @param reference Reference to the roster document to update
      * @return Task of the database update operation
      * @throws IllegalStateException if roster has not been built before
      * @throws IllegalArgumentException if {@code reference} is empty
+     * @throws IllegalArgumentException if {@code nurseID} is empty
      */
-    public Task<Void> update(String nurseID, @NonNull String reference) {
+    public Task<Void> update(@NonNull String nurseID, @NonNull String reference) {
+        if (nurseID.length() == 0)
+            throw new IllegalArgumentException("Given nurse ID cannot be empty");
         if (reference.length() == 0)
             throw new IllegalArgumentException("Given reference cannot be empty");
         if (!isBuilt())
@@ -314,6 +316,23 @@ public class NurseRoster implements Parcelable {
         rosterDocRef.set(rosterData);
 
         return batch.commit().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("NurseRoster.Update", " Failed to update: " + task.getException());
+                //TODO: Display failure to update roster
+            }
+        });
+    }
+
+    /**
+     * Updates the roster database
+     * @return Task of the database update operation
+     */
+    public Task<Void> update() {
+        Map<String, Object> rosterData = new HashMap<>();
+        for (ShiftDay day : days.keySet())
+            rosterData.put(day.name().toLowerCase(), days.get(day).name());
+
+        return db.document(reference).set(rosterData).addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
                 Log.e("NurseRoster.Update", " Failed to update: " + task.getException());
                 //TODO: Display failure to update roster

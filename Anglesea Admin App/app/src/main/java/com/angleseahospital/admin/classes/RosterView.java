@@ -1,5 +1,6 @@
 package com.angleseahospital.admin.classes;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RadioGroup;
@@ -10,7 +11,6 @@ import com.angleseahospital.admin.firestore.Constants;
 import com.angleseahospital.admin.firestore.Nurse;
 import com.angleseahospital.admin.firestore.NurseRoster;
 import com.angleseahospital.admin.firestore.Shift;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 
@@ -18,22 +18,26 @@ import static com.angleseahospital.admin.firestore.NurseRoster.*;
 
 public class RosterView {
 
-    private TextView txt_weekdate;
+    private final TextView txt_weekdate;
 
-    private RadioGroup pg_mon;
-    private RadioGroup pg_tue;
-    private RadioGroup pg_wed;
-    private RadioGroup pg_thu;
-    private RadioGroup pg_fri;
-    private RadioGroup pg_sat;
-    private RadioGroup pg_sun;
+    private final RadioGroup pg_mon;
+    private final RadioGroup pg_tue;
+    private final RadioGroup pg_wed;
+    private final RadioGroup pg_thu;
+    private final RadioGroup pg_fri;
+    private final RadioGroup pg_sat;
+    private final RadioGroup pg_sun;
 
-    private ImageButton navLeft;
-    private ImageButton navRight;
+    private final ImageButton navLeft;
+    private final ImageButton navRight;
 
     private Calendar selectedMonday;
 
-    private Nurse nurse;
+    private final Nurse nurse;
+
+    private final boolean edited = false;
+
+    private final View v;
 
     /**
      * Constructs the RosterView with the given View and Nurse
@@ -41,6 +45,7 @@ public class RosterView {
      * @param nurse Nurse to display the roster for
      */
     public RosterView(View v, Nurse nurse) {
+        this.v = v;
         txt_weekdate = v.findViewById(R.id.roster_txt_weekdate);
 
         pg_mon = v.findViewById(R.id.rgroup_Mon);
@@ -54,7 +59,16 @@ public class RosterView {
         navLeft = v.findViewById(R.id.roster_btn_nav_left);
         navRight = v.findViewById(R.id.roster_btn_nav_right);
 
+        navLeft.setOnClickListener(v1 -> {
+            prevWeek();
+        });
+
+        navRight.setOnClickListener(v1 -> {
+            nextWeek();
+        });
+
         this.nurse = nurse;
+        selectedMonday = NurseRoster.getThisWeeksMonday();
     }
 
     /**
@@ -62,8 +76,10 @@ public class RosterView {
      */
     public void prevWeek() {
         setNavEnabled(false);
-        //TODO: Query Database then update view
-        displayRoster();
+        saveRoster();
+        getPrevWeeksMonday(selectedMonday);
+        displayRoster(Constants.COLLECTION_ROSTERS + "/" + getWeeksDate(selectedMonday) + "/nurses/" + nurse.id);
+        setNavEnabled(true);
     }
 
     /**
@@ -71,8 +87,19 @@ public class RosterView {
      */
     public void nextWeek() {
         setNavEnabled(false);
-        //TODO: Query Database then update view
-        displayRoster();
+        saveRoster();
+        getNextWeeksMonday(selectedMonday);
+        displayRoster(Constants.COLLECTION_ROSTERS + "/" + getWeeksDate(selectedMonday) + "/nurses/" + nurse.id);
+        setNavEnabled(true);
+    }
+
+    public void saveRoster() {
+        nurse.roster.build(v);
+        nurse.roster.update().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                //TODO: Show error failed to save roster
+            }
+        });
     }
 
     /**
@@ -89,12 +116,17 @@ public class RosterView {
      */
     public void displayRoster() { displayRoster(nurse.roster); }
 
+    public void displayRoster(String rosterRef) {
+        nurse.roster.build(rosterRef)
+                .addOnCompleteListener(task -> displayRoster());
+    }
+
     /**
      * Displays the a given roster
      * @param roster
      */
     public void displayRoster(NurseRoster roster) {
-        txt_weekdate.setText(getThisWeeksRosterDate());
+        txt_weekdate.setText(getWeeksDate(selectedMonday));
 
         if (roster.getTotalShifts() == 0)
             return;
