@@ -34,19 +34,26 @@ public class Home extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
+        //Set a onClickListener for the Add Nurse button
         v.findViewById(R.id.btn_addNurse).setOnClickListener(v -> {
+            //Opens the AddEditNurse fragment
             MainActivity.changeCurrentFragment(getActivity(), getParentFragmentManager(), new AddEditNurse(), R.id.nav_addNurse);
         });
 
+        //Once the activity is created. Assign View member with its respective view
         RecyclerView rv_nurse = v.findViewById(R.id.rv_home_nurse);
+
+        //Set the adapter and settings
         NurseAdapter nurseAdapter = new NurseAdapter(true);
-        
         rv_nurse.setHasFixedSize(true);
         rv_nurse.setAdapter(nurseAdapter);
         rv_nurse.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        //Set OnClickListener to each NurseItem
         nurseAdapter.setOnItemClickListener(position ->
-                MainActivity.changeCurrentFragment(getHost(), getParentFragmentManager(), new AddEditNurse(nurseAdapter.get(position)), R.id.nav_addNurse)
+            //Opens the AddEditNurse fragment with clicked Nurse item
+            MainActivity.changeCurrentFragment(getHost(), getParentFragmentManager(), new AddEditNurse(nurseAdapter.get(position)), R.id.nav_addNurse)
         );
     }
 }

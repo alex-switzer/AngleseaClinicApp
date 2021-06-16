@@ -21,16 +21,17 @@ public class UncheckableRadioButton extends AppCompatRadioButton {
         super(context, attrs, defStyleAttr);
     }
 
+    /**
+     * Overrides the toggle functionality to allow for turning off the button once clicked while checked
+     */
     @Override
     public void toggle() {
-
-        if (isChecked()) {
-            if (getParent() != null && getParent() instanceof RadioGroup) {
+        //If button is already checked, uncheck it
+        if (isChecked())
+            if (getParent() != null && getParent() instanceof RadioGroup)
                 ((RadioGroup) getParent()).clearCheck();
-            }
-        } else {
+        else
             super.toggle();
-        }
     }
 
     @Override

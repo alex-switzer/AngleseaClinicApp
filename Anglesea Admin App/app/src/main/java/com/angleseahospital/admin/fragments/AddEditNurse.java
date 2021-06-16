@@ -35,18 +35,33 @@ public class AddEditNurse extends Fragment {
     private String lastname;
     private String pin;
 
-    private boolean editing = false;
+    private boolean editing;
 
+    /**
+     * Constructs a fragment with no nurse to edit
+     */
     public AddEditNurse() {
         nurse = new Nurse();
         nurse.generateID();
+        editing = false;
     }
 
-    public AddEditNurse(Nurse nurse) {
+    /**
+     * Constructs a fragment to edit given Nurse object
+     * @param nurse
+     */
+    public AddEditNurse(@NonNull Nurse nurse) {
         this.nurse = nurse;
         editing = true;
     }
 
+    /**
+     * Once fragment is given a view inflate it's layout
+     * @param inflater Layout inflater for this fragment
+     * @param container Parent container for this fragment
+     * @param savedInstanceState Bundle for previous fragment instance
+     * @return View for the fragment
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,23 +69,32 @@ public class AddEditNurse extends Fragment {
         return v = inflater.inflate(R.layout.frag_addeditnurse, container, false);
     }
 
+    /**
+     * Sets up this fragment once layout is inflated
+     * @param savedInstanceState Bundle from prior instance
+     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //Once the activity is created. Assign View members with their respective views
         etxt_firstname = v.findViewById(R.id.etxt_firstname);
         etxt_lastname = v.findViewById(R.id.etxt_lastname);
         etxt_pin = v.findViewById(R.id.etxt_pin);
 
-        rosterView = new RosterView(v, nurse);
-
-        if (nurse == null || !editing)
+        //If not editing a nurse
+        if (!editing)
             return;
 
+        //Create a RosterView in the fragments view with passed nurse
+        rosterView = new RosterView(v, nurse);
+
+        //Setup views with nurses details
         etxt_firstname.setText(nurse.firstName);
         etxt_lastname.setText(nurse.lastName);
         etxt_pin.setText(nurse.pin);
 
+        //Build nurses roster if it isn't already. Then display roster
         if (!nurse.roster.isBuilt())
             nurse.roster.build(task -> rosterView.displayRoster());
         else
@@ -79,28 +103,37 @@ public class AddEditNurse extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        //Add the add_edit_nurse_menu options to the current toolbar / options menu
         inflater.inflate(R.menu.add_edit_nurse_menu, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //Activates option menus buttons functionality respectively
         if (item.getItemId() == R.id.save_nurse_menu) {
             save();
+            //Consumes item selected call
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Attempts to save the current nurse
+     */
     public void save() {
+        //Doesn't attempt to save if any input is invalid
         if (!verifyInputs()) {
             //TODO: Add visual indication that nurse changes didn't save
             return;
         }
 
+        //Get nurses details
         nurse.firstName = firstname;
         nurse.lastName = lastname;
         nurse.pin = pin;
 
+        //Build the roster from the input view and if successful, update the database
         if (nurse.roster.build(v))
             nurse.updateDatabase(editing).continueWith(task -> {
                 if (!task.isSuccessful()) {
@@ -116,6 +149,10 @@ public class AddEditNurse extends Fragment {
             });
     }
 
+    /**
+     * Verifies the inputs for the nurses details
+     * @return False if any input is invalid
+     */
     private boolean verifyInputs() {
         String firstname = etxt_firstname.getText().toString().trim();
         if (firstname.equals(""))

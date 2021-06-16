@@ -44,12 +44,21 @@ public class EntireRosterDayView extends LinearLayout {
         this(context, attrs, 0);
     }
 
+    /**
+     * Constructs a EntireRosterDayView and inflates the layout
+     * @param context Context the view is being inflated in
+     * @param attrs Views attributes
+     * @param defStyleAttr Style attributes
+     */
     public EntireRosterDayView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
+
+        //Inflates the respective layout
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.entire_roster_day_view, this);
 
+        //Sets up member variables with their respective views
         recyclers.put(Shift.ShiftType.AM, view.findViewById(R.id.rv_roster_day_am));
         recyclers.put(Shift.ShiftType.PM, view.findViewById(R.id.rv_roster_day_pm));
         recyclers.put(Shift.ShiftType.NIGHT, view.findViewById(R.id.rv_roster_day_night));
@@ -59,6 +68,7 @@ public class EntireRosterDayView extends LinearLayout {
         adapters.put(Shift.ShiftType.NIGHT, new NurseAdapter(false));
 
         RecyclerView rv;
+        //Loops through all recycler views, then set the layout managers and adapters
         for (Shift.ShiftType key : recyclers.keySet()) {
             rv = recyclers.get(key);
             rv.setAdapter(adapters.get(key));
@@ -66,14 +76,25 @@ public class EntireRosterDayView extends LinearLayout {
         }
     }
 
+    /**
+     * Gets all the adapters in a HashMap
+     * @return HashMap of all adapters
+     */
     public Map<Shift.ShiftType, NurseAdapter> getAdapters() {
         return adapters;
     }
 
+    /**
+     * Displays the roster of all nurses in a given day
+     * @param day
+     */
     public void displayDay(@NonNull Calendar day) {
         this.day = day;
 
+        //Clears the recyclers before adding nurses
         clear();
+
+        //Gets all nurses rostered for a given day
         FirebaseFirestore.getInstance()
                 .collection(Constants.COLLECTION_ROSTERS + "/" + NurseRoster.getWeeksDate(day) + "/nurses")
                 .orderBy(toString(day), Query.Direction.ASCENDING)
@@ -91,9 +112,12 @@ public class EntireRosterDayView extends LinearLayout {
                     }
 
                     Shift.ShiftType type;
+                    //Loop through all documents in the query
                     for (QueryDocumentSnapshot doc : query) {
+                        //Get the ShiftTypes
                         type = Shift.ShiftType.fromString((String) doc.get(toString(day)));
                         if (type != Shift.ShiftType.NONE) {
+                            //Add the nurse to the RecyclerView dedicated to the ShiftType (AM, PM, Night)
                             adapters.get(type).addNurse(doc.getId());
                             Log.d("ROSTER DAY VIEW", "displayDay: Nurse added");
                         } else {
@@ -103,19 +127,29 @@ public class EntireRosterDayView extends LinearLayout {
                 });
     }
 
+    /**
+     * Clears all nurses from all recycler views
+     */
     public void clear() {
         NurseAdapter adapter;
-        for (Shift.ShiftType key : adapters.keySet()) {
-            adapter = adapters.get(key);
-            adapter.clear();
-            adapter.notifyDataSetChanged();
-        }
+        //Loop through all adapters then clear them
+        for (Shift.ShiftType key : adapters.keySet())
+            adapters.get(key).clear();
     }
 
+    /**
+     * Returns a string of the ShiftDay the given day represents
+     * @param day Day to convert to string
+     * @return Returns a string of the ShiftDay the given day represents
+     */
     private String toString(Calendar day) {
         return Shift.ShiftDay.values()[day.get(Calendar.DAY_OF_WEEK) - 1].name().toLowerCase();
     }
 
+    /**
+     * Returns the day being displayed
+     * @return Day of the roster being displayed
+     */
     public Calendar getDay() {
         return day;
     }

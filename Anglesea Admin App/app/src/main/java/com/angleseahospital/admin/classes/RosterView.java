@@ -35,10 +35,12 @@ public class RosterView {
 
     private Nurse nurse;
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    /**
+     * Constructs the RosterView with the given View and Nurse
+     * @param v View to setup the RosterView in
+     * @param nurse Nurse to display the roster for
+     */
     public RosterView(View v, Nurse nurse) {
-
         txt_weekdate = v.findViewById(R.id.roster_txt_weekdate);
 
         pg_mon = v.findViewById(R.id.rgroup_Mon);
@@ -55,38 +57,56 @@ public class RosterView {
         this.nurse = nurse;
     }
 
+    /**
+     * Displays the previous weeks roster for the nurse
+     */
     public void prevWeek() {
         setNavEnabled(false);
         //TODO: Query Database then update view
         displayRoster();
     }
 
+    /**
+     * Displays the next weeks roster for the nurse
+     */
     public void nextWeek() {
         setNavEnabled(false);
         //TODO: Query Database then update view
         displayRoster();
     }
 
-
+    /**
+     * Dermins whether the user can navigate through weeks
+     * @param enabled Whether or not the user can navigate through weeks
+     */
     public void setNavEnabled(boolean enabled) {
         navLeft.setEnabled(enabled);
         navRight.setEnabled(enabled);
     }
 
+    /**
+     * Displays the roster of the preset nurse
+     */
     public void displayRoster() { displayRoster(nurse.roster); }
-    public void displayRoster(NurseRoster roster) {
-//        selectedMonday =
 
+    /**
+     * Displays the a given roster
+     * @param roster
+     */
+    public void displayRoster(NurseRoster roster) {
         txt_weekdate.setText(getThisWeeksRosterDate());
 
         if (roster.getTotalShifts() == 0)
             return;
 
+        //Loop through all shifts
         for (Shift.ShiftDay day : roster.getShifts().keySet()) {
+            //Get each shift
             Shift shift = roster.getShift(day);
             if (shift == null)
                 continue;
 
+            //Toggle the respective fields for each shift
             switch (shift.type) {
                 case AM:
                     toggleAM(day);
@@ -104,6 +124,10 @@ public class RosterView {
         }
     }
 
+    /**
+     * Toggles the AM field for a given day
+     * @param day Day to toggle the AM field for
+     */
     private void toggleAM(Shift.ShiftDay day) {
         switch (day) {
             case MON:
@@ -129,6 +153,11 @@ public class RosterView {
                 break;
         }
     }
+
+    /**
+     * Toggles the PM field for a given day
+     * @param day Day to toggle the PM field for
+     */
     private void togglePM(Shift.ShiftDay day) {
         switch (day) {
             case MON:
@@ -154,6 +183,11 @@ public class RosterView {
                 break;
         }
     }
+
+    /**
+     * Toggles the Night field for a given day
+     * @param day Day to toggle the Night field for
+     */
     private void toggleNight(Shift.ShiftDay day) {
         switch (day) {
             case MON:
@@ -179,5 +213,4 @@ public class RosterView {
                 break;
         }
     }
-
 }

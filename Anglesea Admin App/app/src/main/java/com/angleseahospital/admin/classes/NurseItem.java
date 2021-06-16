@@ -29,16 +29,31 @@ public class NurseItem extends LinearLayout {
         this(context, attrs, 0);
     }
 
+    /**
+     * Constructs a NurseItem and inflates the layout
+     * @param context Context the view is being inflated in
+     * @param attrs Views attributes
+     * @param defStyleAttr Style attributes
+     */
     public NurseItem(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        //Inflate the respective layout
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = inflater.inflate(R.layout.item_nurse, this);
 
+        //Sets up member variables with their respective views
         img = view.findViewById(R.id.nurseItem_img_edit);
         firstname = view.findViewById(R.id.nurseItem_txt_firstname);
         lastname =view.findViewById(R.id.nurseItem_txt_lastname);
     }
 
+    /**
+     * Adapts the views style depending on the dimensions
+     * @param w New width
+     * @param h New height
+     * @param oldw Old width
+     * @param oldh Old height
+     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
