@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:maxHeight="700dp"
     android:minHeight="300dp"
-    android:maxWidth="600dp"
+    android:maxWidth="1000dp"
     android:minWidth="450dp">
 
     <TextView
