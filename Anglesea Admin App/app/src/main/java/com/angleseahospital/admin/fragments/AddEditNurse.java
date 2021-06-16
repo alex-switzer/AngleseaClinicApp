@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,7 +50,7 @@ public class AddEditNurse extends Fragment {
 
     /**
      * Constructs a fragment to edit given Nurse object
-     * @param nurse
+     * @param nurse Nurse to be edited
      */
     public AddEditNurse(@NonNull Nurse nurse) {
         this.nurse = nurse;
@@ -127,6 +126,9 @@ public class AddEditNurse extends Fragment {
         }
     }
 
+    /**
+     * Deletes the current nurse on the database. Then returns to the Home fragment
+     */
     public void delete() {
         if (!editing)
             goHome();
@@ -176,6 +178,9 @@ public class AddEditNurse extends Fragment {
             });
     }
 
+    /**
+     * Returns to the Home fragment
+     */
     private void goHome() {
         MainActivity.changeCurrentFragment(getHost(), getParentFragmentManager(), new Home(), R.id.nav_home);
     }
@@ -196,6 +201,7 @@ public class AddEditNurse extends Fragment {
         String pin = etxt_pin.getText().toString().trim();
         if (pin.equals(""))
             return false;
+
         if (pin.length() != Constants.NURSE_PIN_LENGTH)
             return false;
 
