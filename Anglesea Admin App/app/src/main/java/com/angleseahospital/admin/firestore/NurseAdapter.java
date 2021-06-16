@@ -1,5 +1,6 @@
 package com.angleseahospital.admin.firestore;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,18 +111,20 @@ public class NurseAdapter extends RecyclerView.Adapter {
      * @param nurseID Nurse ID to be added to Adapter
      */
     public void addNurse(String nurseID) {
+        Log.d("NURSE ADAPTER", "Adding nurse id: " + nurseID);
         FirebaseFirestore.getInstance()
-                .document(Constants.COLLECTION_NURSES + "/" + nurseID)
-                .get().addOnCompleteListener(task -> {
-                    if (!task.isSuccessful())
-                        return;
+            .document(Constants.COLLECTION_NURSES + "/" + nurseID)
+            .get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful())
+                    return;
 
-                    DocumentSnapshot nurseDoc = task.getResult();
-                    if (nurseDoc == null)
-                        return;
+                DocumentSnapshot nurseDoc = task.getResult();
+                if (nurseDoc == null)
+                    return;
 
+                if (nurseDoc.exists())
                     addNurse(new Nurse(nurseDoc));
-                });
+            });
     }
 
     /**

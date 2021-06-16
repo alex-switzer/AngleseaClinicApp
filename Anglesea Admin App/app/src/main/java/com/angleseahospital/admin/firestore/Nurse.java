@@ -46,12 +46,14 @@ public class Nurse implements Parcelable {
      */
     public Nurse(DocumentSnapshot docNurse) {
         id = docNurse.getId();
+        Log.d("NURSE CONSTRUCTOR", "Nurse ID: " + id);
         firstName = (String) docNurse.get(FIELD_FIRSTNAME);
         lastName = (String) docNurse.get(FIELD_LASTNAME);
         pin = (String) docNurse.get(FIELD_PIN);
         present = (boolean) docNurse.get(FIELD_PRESENT);
         lastSign = (String) docNurse.get(FIELD_LASTSIGN);
         roster = new NurseRoster((String) docNurse.get(FIELD_ROSTER));
+        Log.d("NURSE CONSTRUCTOR", id + " added successfully");
     }
 
     /**

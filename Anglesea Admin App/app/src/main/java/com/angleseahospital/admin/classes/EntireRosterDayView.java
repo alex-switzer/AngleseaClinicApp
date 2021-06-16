@@ -91,8 +91,10 @@ public class EntireRosterDayView extends LinearLayout {
      * @param day Day of a week to display
      */
     public boolean displayDay(@NonNull Calendar day) {
-        if (inProgress)
+        if (inProgress) {
+            Log.d("ENTIRE ROSTER DAY VIEW", "Already in progress...");
             return false;
+        }
 
         inProgress = true;
         this.day = day;
@@ -102,36 +104,37 @@ public class EntireRosterDayView extends LinearLayout {
 
         //Gets all nurses rostered for a given day
         FirebaseFirestore.getInstance()
-                .collection(Constants.COLLECTION_ROSTERS + "/" + NurseRoster.getWeeksDate(day) + "/nurses")
-                .orderBy(toString(day), Query.Direction.ASCENDING)
-                .get().addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        //TODO: Show error message
-                        Log.d("ENTIRE ROSTER DAY VIEW:", "Failed to query collection: " + task.getException());
-                        return;
-                    }
+            .collection(Constants.COLLECTION_ROSTERS + "/" + NurseRoster.getWeeksDate(day) + "/nurses")
+            .orderBy(toString(day), Query.Direction.ASCENDING)
+            .get()
+            .addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    //TODO: Show error message
+                    Log.d("ENTIRE ROSTER DAY VIEW:", "Failed to query collection: " + task.getException());
+                    return;
+                }
 
-                    QuerySnapshot query = task.getResult();
-                    if (query == null) {
-                        Log.d("Roster Day View", "displayDay: Query was null");
-                        return;
-                    }
+                QuerySnapshot query = task.getResult();
+                if (query == null) {
+                    Log.d("Roster Day View", "displayDay: Query was null");
+                    return;
+                }
 
-                    Shift.ShiftType type;
-                    //Loop through all documents in the query
-                    for (QueryDocumentSnapshot doc : query) {
-                        //Get the ShiftTypes
-                        type = Shift.ShiftType.fromString((String) doc.get(toString(day)));
-                        if (type != Shift.ShiftType.NONE) {
-                            //Add the nurse to the RecyclerView dedicated to the ShiftType (AM, PM, Night)
-                            adapters.get(type).addNurse(doc.getId());
-                            Log.d("ROSTER DAY VIEW", "displayDay: Nurse added");
-                        } else {
-                            Log.d("ROSTER DAY VIEW", "displayDay: Nurse had shift type of NONE");
-                        }
+                Shift.ShiftType type;
+                //Loop through all documents in the query
+                for (QueryDocumentSnapshot doc : query) {
+                    //Get the ShiftTypes
+                    type = Shift.ShiftType.fromString((String) doc.get(toString(day)));
+                    if (type != Shift.ShiftType.NONE) {
+                        //Add the nurse to the RecyclerView dedicated to the ShiftType (AM, PM, Night)
+                        adapters.get(type).addNurse(doc.getId());
+                        Log.d("ROSTER DAY VIEW", "displayDay: Nurse added " + doc.getId());
+                    } else {
+                        Log.d("ROSTER DAY VIEW", "displayDay: Nurse had shift type of NONE");
                     }
-                    inProgress = false;
-                });
+                }
+                inProgress = false;
+            });
 
         return true;
     }
@@ -152,7 +155,8 @@ public class EntireRosterDayView extends LinearLayout {
      * @return Returns a string of the ShiftDay the given day represents
      */
     private String toString(Calendar day) {
-        return Shift.ShiftDay.values()[day.get(Calendar.DAY_OF_WEEK) - 1].name().toLowerCase();
+        day.setFirstDayOfWeek(Calendar.MONDAY);
+        return Shift.ShiftDay.values()[day.get(Calendar.DAY_OF_WEEK) - 2].name().toLowerCase();
     }
 
     /**
